@@ -18,7 +18,6 @@ def check(total,line1,line2):
         c2 = line2[i]
         if c1 == 'C' and c1 == c2 :
             mycount = mycount + 1
-
     return mycount
 
 assert check(5 , "CC..C", ".CC..") == 1

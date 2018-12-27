@@ -13,7 +13,7 @@ else
 	exit 0 
 fi
 
-cat "$fin"   | python  j0${j}.py   > /tmp/a.txt ;
+cat "$fin"   | python3  j0${j}.py   > /tmp/a.txt ;
 
 if [ $flag =  "1" ]; then
 	echo "========================================"
