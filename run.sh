@@ -1,4 +1,13 @@
 j=$1
+
+
+if [ -f "j0${j}.py" ]
+then
+	echo "run"
+else
+	exit 
+fi
+
 for index in `seq 1 13`
 do
  bash runa.sh $j $index 0
