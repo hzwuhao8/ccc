@@ -5,23 +5,17 @@ if [ -f "j0${j}.py" ]
 then
 	echo "run"
 else
+	echo  "python 程序不存在 j0${j}.py"
 	exit 
 fi
 
-for index in `seq 1 13`
+for fin in  $(ls /$HOME/Desktop/data/J${j}/*.in)
 do
- bash runa.sh $j $index 0
+ fout="${fin/in/out}"
+ bash runa.sh $j 0 $fin $fout 
  if [ $? != "0" ]; then
-	bash runa.sh $j $index 1
+	bash runa.sh $j 1  $index  $fin $fout
  fi
 done
 
-for index in "sample1" "sample2"
-do
- bash runa.sh $j $index 0
- if [ $? != "0" ]; then
-        bash runa.sh $j $index 1
- fi
-
-done
 

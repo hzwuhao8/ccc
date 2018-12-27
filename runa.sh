@@ -1,30 +1,31 @@
 j=$1
-index=$2
-flag=$3
+flag=$2
+fin=$3
+fout=$4
 #echo $index
 #echo "$HOME/Desktop/data/J${j}/j${j}.${index}.in"
 
-if [ -f "$HOME/Desktop/data/J${j}/j${j}.${index}.in" ]
+if [ -f "$fin" ]
 then
-	echo "$index"
+	echo "$fin"
 else
-	ls -l   "$HOME/Desktop/data/J${j}/j${j}.${index}.in" 
+	echo  "$fin" 
 	exit 0 
 fi
 
-cat ~/Desktop/data/J${j}/j${j}.${index}.in   | python  j0${j}.py   > /tmp/a.txt ;
+cat "$fin"   | python  j0${j}.py   > /tmp/a.txt ;
 
 if [ $flag =  "1" ]; then
 	echo "========================================"
 	echo "测试输入" 
-	cat  ~/Desktop/data/J${j}/j${j}.${index}.in ;
+	cat  "$fin" ;
 	echo "标准结果"
-	cat ~/Desktop/data/J${j}/j${j}.${index}.out
+	cat  "$fout"
 	echo "程序运行结果"
 	cat /tmp/a.txt ;
 	echo "========================================"
 
 fi
 
-diff /tmp/a.txt   ~/Desktop/data/J${j}/j${j}.${index}.out
+diff /tmp/a.txt   "$fout"
 
