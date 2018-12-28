@@ -27,5 +27,5 @@ if [ $flag =  "1" ]; then
 
 fi
 
-diff /tmp/a.txt   "$fout"
+diff --strip-trailing-cr  /tmp/a.txt   "$fout"
 

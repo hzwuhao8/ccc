@@ -15,6 +15,7 @@ do
  bash runa.sh $j 0 $fin $fout 
  if [ $? != "0" ]; then
 	bash runa.sh $j 1  $index  $fin $fout
+	exit
  fi
 done
 
