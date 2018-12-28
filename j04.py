@@ -30,6 +30,7 @@ def allisok(n,xxx):
         flag = isDes( xxx[i])
         if not flag:
             myprint( f"i={i}; xxx[i] = {xxx[i]}  f={flag} FLAG={ isDes(xxx[i])}" )
+            #break
             return flag
         
     for i in range(n):
