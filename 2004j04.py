@@ -1,10 +1,12 @@
 def myprint(x):
     pass
-    print(x)
+    #print(x)
 
 
 def myinput():
-    pass
+    line1 = input()
+    line2 = input()
+    return (line1.strip(),line2.strip())
 
 #加密  模 26
 # 'A' -> 1 'B' -> 2
@@ -67,4 +69,6 @@ assert encode2("ACT","BAN") == "BCG", f'encode2("ACT","BAN")={encode2("ACT","BAN
 assert myfunc("ACT","BANANA & PEEL") == "BCGAPTPGXL" , myfunc("ACT","BANANA & PEEL")
 assert myfunc("TRICKY","I LOVE PROGRAMMING!") == "BCWXONKFOTKKFZVI" , myfunc("TRICKY","I LOVE PROGRAMMING!")
 
-
+(password, msg) = myinput()
+res=myfunc(password,msg)
+print(res)
