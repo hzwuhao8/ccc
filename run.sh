@@ -19,7 +19,7 @@ do
  bash runa.sh  0 $fin $fout  $myp
  if [ $? != "0" ]; then
 	bash runa.sh  1 $fin $fout  $myp
-	exit
+	#exit
  else
 	echo "ok"
  fi
