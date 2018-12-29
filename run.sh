@@ -1,21 +1,27 @@
-j=$1
+mydir=$1
+ext=$2
+myp=$3
 
-
-if [ -f "j0${j}.py" ]
+echo " run.sh  data_dir  ext xxx.py"
+echo "mydir=${mydir} ext=${ext}  myp=${myp}"
+if [ -f "$myp" ]
 then
 	echo "run"
 else
-	echo  "python 程序不存在 j0${j}.py"
+	echo  "python 程序不存在 $myp"
 	exit 
 fi
 
-for fin in  $(ls /$HOME/Desktop/data/J${j}/*.in)
+for fin in  $(ls ${mydir}*.${ext})
 do
  fout="${fin/in/out}"
- bash runa.sh $j 0 $fin $fout 
+ fout="${fin/data/out}"
+ bash runa.sh  0 $fin $fout  $myp
  if [ $? != "0" ]; then
-	bash runa.sh $j 1  $index  $fin $fout
+	bash runa.sh  1 $fin $fout  $myp
 	exit
+ else
+	echo "ok"
  fi
 done
 

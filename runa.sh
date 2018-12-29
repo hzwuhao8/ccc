@@ -1,9 +1,13 @@
-j=$1
-flag=$2
-fin=$3
-fout=$4
-#echo $index
-#echo "$HOME/Desktop/data/J${j}/j${j}.${index}.in"
+flag=$1
+fin=$2
+fout=$3
+myp=$4
+
+#echo "runa.sh  flag  data out  myp"
+
+if [ $flag =  "1" ]; then
+	echo "flag=${flag} fin=${fin} fout=${fout} myp=${myp}"
+fi
 
 if [ -f "$fin" ]
 then
@@ -13,7 +17,7 @@ else
 	exit 0 
 fi
 
-cat "$fin"   | python3  j0${j}.py   > /tmp/a.txt ;
+cat "$fin"   | python3  $myp   > /tmp/a.txt ;
 
 if [ $flag =  "1" ]; then
 	echo "========================================"
