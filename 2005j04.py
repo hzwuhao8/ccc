@@ -4,33 +4,43 @@
 # 3 根据 当前位置， 1 根据在哪个象限， 生成 移动序列， 4个可能， 在 选择第一个可以的移动， 继续下一步，    如果 无处可去  ，就不动
 
 def myprint(x):
-    print(x)
+    #print(x)
     pass
 
 
 def mprint(m):
+    h=["'{:>4}'".format(str(x)) for x in range(len(m[0]))]
+    myprint(f"    [{', '.join(h)}]")
+    myprint("")
     for i in range(len(m)):
         tmp=[]
         for j in range(len(m[i])):
             x = m[i][j]
-            if x < -100:
+            if x <= -100:
                 mystr = (f"{x}")
-            elif x < -10:
+            elif x <= -10:
                 mystr = (f" {x}")
             elif x < 0:
                 mystr=(f"  {x}")
             else:
                 mystr=(f"   {x}")
             tmp.append(mystr)
-        myprint(tmp)
+        index_str="{:>4}".format(str(i))
+        myprint(f"{index_str}{tmp}")
 
 def is_move_able(x,y,martix):
     rows = len(martix)
     cols = len(martix[0])
     if x < 0 or y <0  or x >= rows or y>=cols:
-        False
+        return False
     else:
-        return  martix[x][y] == 1
+        if x==17 and y==8 :
+            myprint(martix[x][y])
+        if martix[x][y] == 1:
+            return True
+        else:
+            return False
+
 
 def move(x,y, martix ,step):
     x1 = -1
@@ -38,14 +48,16 @@ def move(x,y, martix ,step):
 
     next_seq = moveseq(x,y,martix)
     myprint(f"next_seq={next_seq}")
+    flag = False
     for p in next_seq:
         (x1, y1) = p
         #myprint(f"is_move_able({x1},{y1} martix)={is_move_able(x1,y1, martix)}")
         if is_move_able(x1,y1, martix):
+            flag = True
             break;
-    if x1 == -1 or y1 == -1:
-        print ( "ERROR can't move" )
-        mprint(martix)
+
+    if not flag :
+        return (x,y)
     else:
         myprint(f"move to {x1},{y1}")
         martix[x1][y1] = -step
@@ -57,12 +69,12 @@ def moveseq(x,y,martix):
     cols = len(martix[0])
     #myprint(f"rows={rows} cols={cols}")
     res = []
-    if  x <= rows/2  and y <= cols/2:
+    if  x <= rows//2  and y < cols//2:
         res = [(x - 1, y), (x, y + 1), (x + 1, y), (x, y - 1)]
 
-    elif x <= rows/2 and y >= cols/2:
+    elif x <= rows//2 and y >= cols//2:
         res = [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
-    elif x >= rows/2 and y <= cols/2:
+    elif x >= rows//2 and y < cols//2:
         res=[(x,y-1),(x-1,y),(x,y+1),(x+1,y)]
     else:
         res=[(x+1,y),(x,y-1),(x-1,y),(x,y+1)]
