@@ -11,9 +11,11 @@ def my_reduce(s):
     r2 = re.compile('A(NA)+')
     r3 = re.compile('BAS')
 
-    for i in range(10):
+    while True:
         s1 = r2.sub('A', s)
         s2 = r3.sub('A', s1)
+        if s == s2:
+            break
         s = s2
     return s
 
