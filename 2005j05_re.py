@@ -4,7 +4,7 @@ import re
 
 
 def my_print(x):
-    # print(x)
+    print(x)
     pass
 
 
@@ -30,15 +30,15 @@ def my_check_re(s):
 def my_check_stack(my_str):
     my_print("="*40)
     my_print(my_str)
-    stack_a= []
-    stack_b = []
+    stack_a = []
+
     for s in my_str:
-        my_print("{0} push {1}".format(stack_a,s))
-        # my_print(stack_b)
+        my_print("{0} push {1}".format(stack_a, s))
+
         if 'A' == s:
-            if len(stack_a) == 0 :
+            if len(stack_a) == 0:
                 stack_a.append(s)
-            elif len(stack_a) == 1 :
+            elif len(stack_a) == 1:
                 stack_a.append(s)
             else:
                 c1 = stack_a.pop()
@@ -79,11 +79,8 @@ def my_check_stack(my_str):
                 stack_a.append(s)
 
     my_print(stack_a)
-    # my_print(stack_b)
+
     return stack_a == ['A']
-    # pass
-
-
 
 
 def my_input():
@@ -125,4 +122,12 @@ my_check_stack('A')
 my_check_stack('ANA')
 
 my_check_stack('BANANANBANBASNASS')
+
+s_a= "BBBBBANBANANBANASNASNBASNASSSSS"
+s_all= f"B{s_a}SNB{s_a}SNB{s_a}SNBAN{s_a}S"
+my_check_stack(s_all)
+
+my_print(my_check_re(s_all))
+
+
 
