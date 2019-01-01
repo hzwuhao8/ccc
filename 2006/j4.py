@@ -46,11 +46,7 @@ base_rules = [(1, 7), (1, 4), (2, 1), (3, 4), (3, 5)]
 def my_run(data):
     res = []
     rules = base_rules + data
-    my_print(rules)
-    not_free_var = [x[1] for x in rules ]
-    my_print("not_free_var={0}".format(not_free_var))
-    free_var = [i for i in range(1, 8) if i not in not_free_var ]
-    my_print("free_var={0}".format(free_var))
+
     free_var = [i for i in range(1, 8) if is_right(i, rules, [])]
     if free_var == []:
         return []
