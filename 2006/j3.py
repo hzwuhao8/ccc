@@ -5,11 +5,18 @@
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
 def my_input():
+    data = []
+    while True:
+        tmp = input()
+        if "halt" == tmp:
+            break
+        data.append(tmp)
+    return data
     pass
 
 
@@ -50,13 +57,28 @@ my_dic = {
 
     }
 
+
 def my_run(data):
+    my_print("")
+    my_print(data)
+    my_print("="*40)
     stack_a = []
     for c in data:
+        my_print(stack_a)
+        action = my_dic[c]
         if len(stack_a) == 0:
-            stack_a.append([c, my_dic[c]])
+            stack_a.append([c, action])
         else:
+            s1 = stack_a[-1]
+            if action[0] == s1[1][0]:
+                stack_a.append(['', [0, 2]])
 
+            stack_a.append([c, action])
+    my_print(stack_a)
+    total = 0
+    for x in stack_a:
+        total = total + x[1][1]
+    return total
     pass
 
 
@@ -73,6 +95,10 @@ def my_test():
 
 def my_main():
     my_test()
+    data = my_input()
+    for s in data:
+        total = my_run(s)
+        print(total)
 
 
 my_main()
