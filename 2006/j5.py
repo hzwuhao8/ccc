@@ -14,6 +14,14 @@ def my_print(x):
     pass
 
 
+def my_print_dic(dic):
+    for i in range(1, 9):
+        for j in range(1, 9):
+            x = dic.get((i, j), "X")
+            print("  {0} ".format(x), end="")
+        print()
+
+
 def my_input():
     my_str = input()
     my_str_list = my_str.split()
@@ -32,7 +40,7 @@ def my_input():
 
 dic_a = {(4, 4): "W",
          (4, 5): "B",
-         (5, 4): "W",
+         (5, 4): "B",
          (5, 5): "W",
          }
 
@@ -49,11 +57,44 @@ for i in range(1, 9):
     dic_c[(i, 5)] = 'W'
     dic_c[(i, 6)] = 'W'
 
-dic_choose = {'a': dic_a , 'b': dic_b, "c": dic_c }
+dic_choose = {'a': dic_a, 'b': dic_b, "c": dic_c}
+
+
+# 最大程度的改变 水平方向的
+
+def reverse_color(c):
+    if c == 'B':
+        return 'W'
+    elif c == 'W':
+        return 'B'
+    else:
+        my_print("ERROR COLOR")
+
+
+def hor(dic, r, c, color, r_color):
+
+    for i in range(1, 9):
+        current_color = dic.get((r, i), "")
+        my_print("current_color={0} ({1}, {2})".format(current_color,r,i))
+        if current_color == color:
+            tmp_l = [dic.get((r, j), "") for j in range(i + 1, c)]
+            if set(tmp_l) == set([r_color]):
+                my_print("find {0} - {1}".format(i + 1, c - 1))
+                for k in range(i + 1, c):
+                    dic[(r, k)] = color
+            tmp_r = [dic.get((r, j), "") for j in range(c + 1, i)]
+            if set(tmp_r) == set([r_color]):
+                my_print("find {0} - {1}".format(c + 1, i))
+                for k in range(c + 1, i):
+                    dic[(r, k)] = color
+    dic[(r, c)] = color
+
+
+
 
 # 改变状态， 核心方法
 def black_move(dic_current, r, c):
-
+    hor(dic_current, r, c, 'B', 'W')
     pass
 
 
@@ -67,10 +108,12 @@ def my_run(typ, data):
     dic_current = dic_choose[typ].copy()
 
     for i in range(len(data)):
+        my_print_dic(dic_current)
         if i % 2 == 0:
             black_move(dic_current, data[i][0], data[i][1])
         else:
             white_move(dic_current, data[i][0], data[i][1])
+    my_print_dic(dic_current)
     total_b = 0
     total_w = 0
     for k, v in dic_current.items():
@@ -80,7 +123,6 @@ def my_run(typ, data):
             total_b += 1
         else:
             pass
-
     return [total_b, total_w]
     pass
 
