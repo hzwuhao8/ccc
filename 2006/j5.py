@@ -146,13 +146,13 @@ def dia(dic, r, c, color, r_color):
             k = k - 1
             continue
         else:
-            k = k - 1
+
             if dic.get((x, y), "") == color:
                 tmp_list = [dic.get((x - t, y - t), "") for t in range(1, k)]
                 if set(tmp_list) == set([r_color]):
                     for t in range(1, k):
                         dic[(x - t, y - t)] = color
-
+            k = k - 1
 
 
     # up right
@@ -164,13 +164,13 @@ def dia(dic, r, c, color, r_color):
             k = k - 1
             continue
         else:
-            k = k - 1
+
             if dic.get((x, y), "") == color:
                 tmp_list = [dic.get((x - t, y + t), "") for t in range(1, k)]
                 if set(tmp_list) == set([r_color]):
                     for t in range(1, k):
                         dic[(x - t, y + t)] = color
-
+            k = k - 1
 
 
     # down left
@@ -182,13 +182,13 @@ def dia(dic, r, c, color, r_color):
             k = k - 1
             continue
         else:
-            k = k - 1
+
             if dic.get((x, y), "") == color:
                 tmp_list = [dic.get((x + t, y - t), "") for t in range(1, k)]
                 if set(tmp_list) == set([r_color]):
                     for t in range(1, k):
                         dic[(x + t, y - t)] = color
-
+            k = k - 1
     # down right
     k = 8
     while k > 0:
@@ -198,12 +198,13 @@ def dia(dic, r, c, color, r_color):
             k = k - 1
             continue
         else:
-            k = k - 1
+
             if dic.get((x, y), "") == color:
                 tmp_list = [dic.get((x + t, y + t), "") for t in range(1, k)]
                 if set(tmp_list) == set([r_color]):
                     for t in range(1, k):
                         dic[(x + t, y + t)] = color
+            k = k - 1
 
     dic[(r, c)] = color
 
