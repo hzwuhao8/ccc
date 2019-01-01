@@ -15,12 +15,14 @@ def my_print(x):
 
 
 def my_print_dic(dic):
+    # return None
+    print()
     for i in range(1, 9):
         for j in range(1, 9):
-            x = dic.get((i, j), "X")
+            x = dic.get((i, j), "*")
             print("  {0} ".format(x), end="")
         print()
-
+    print()
 
 def my_input():
     my_str = input()
@@ -57,6 +59,17 @@ for i in range(1, 9):
     dic_c[(i, 5)] = 'W'
     dic_c[(i, 6)] = 'W'
 
+def tt():
+    my_print("==="*20)
+    my_print_dic(dic_a)
+    my_print("==="*20)
+    my_print_dic(dic_b)
+    my_print("==="*20)
+    my_print_dic(dic_c)
+
+    my_print("==="*20)
+
+
 dic_choose = {'a': dic_a, 'b': dic_b, "c": dic_c}
 
 
@@ -75,7 +88,7 @@ def hor(dic, r, c, color, r_color):
 
     for i in range(1, 9):
         current_color = dic.get((r, i), "")
-        my_print("current_color={0} ({1}, {2})".format(current_color,r,i))
+        #my_print("current_color={0} ({1}, {2})".format(current_color,r,i))
         if current_color == color:
             tmp_l = [dic.get((r, j), "") for j in range(i + 1, c)]
             if set(tmp_l) == set([r_color]):
@@ -90,16 +103,124 @@ def hor(dic, r, c, color, r_color):
     dic[(r, c)] = color
 
 
+def ver(dic, r, c, color, r_color):
+    #up
+    k = 8
+    while k > 0:
+        x = r - k
+        if x < 0:
+            k = k - 1
+            continue
+        else:
+
+            if dic.get((x, c), "") == color:
+                tmp_list = [dic.get((x + t, c), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x + t, c)] = color
+            k = k - 1
+
+    k = 8
+    while k > 0:
+        x = r + k
+        if x > 8:
+            k = k - 1
+            continue
+        else:
+            if dic.get((x, c), "") == color:
+                tmp_list = [dic.get((x - t, c), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x - t, c)] = color
+            k = k - 1
+    dic[(r, c)] = color
+
+
+def dia(dic, r, c, color, r_color):
+    # up left
+    k = 8
+    while k > 0:
+        x = r - k
+        y = c - k
+        if x < 0 or y < 0:
+            k = k - 1
+            continue
+        else:
+            k = k - 1
+            if dic.get((x, y), "") == color:
+                tmp_list = [dic.get((x - t, y - t), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x - t, y - t)] = color
+
+
+
+    # up right
+    k = 8
+    while k > 0:
+        x = r - k
+        y = c + k
+        if x < 0 or y > 8:
+            k = k - 1
+            continue
+        else:
+            k = k - 1
+            if dic.get((x, y), "") == color:
+                tmp_list = [dic.get((x - t, y + t), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x - t, y + t)] = color
+
+
+
+    # down left
+    k = 8
+    while k > 0:
+        x = r + k
+        y = c - k
+        if x > 8 or y < 0:
+            k = k - 1
+            continue
+        else:
+            k = k - 1
+            if dic.get((x, y), "") == color:
+                tmp_list = [dic.get((x + t, y - t), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x + t, y - t)] = color
+
+    # down right
+    k = 8
+    while k > 0:
+        x = r + k
+        y = c + k
+        if x > 8 or y > 8:
+            k = k - 1
+            continue
+        else:
+            k = k - 1
+            if dic.get((x, y), "") == color:
+                tmp_list = [dic.get((x + t, y + t), "") for t in range(1, k)]
+                if set(tmp_list) == set([r_color]):
+                    for t in range(1, k):
+                        dic[(x + t, y + t)] = color
+
+    dic[(r, c)] = color
+
 
 
 # 改变状态， 核心方法
 def black_move(dic_current, r, c):
     hor(dic_current, r, c, 'B', 'W')
+    ver(dic_current, r, c, 'B', 'W')
+    dia(dic_current, r, c, 'B', 'W')
     pass
 
 
 def white_move(dic_current, r, c):
-
+    hor(dic_current, r, c, 'W', 'B')
+    ver(dic_current, r, c, 'W', 'B')
+    dia(dic_current, r, c, 'W', 'B')
     pass
 
 
@@ -109,10 +230,24 @@ def my_run(typ, data):
 
     for i in range(len(data)):
         my_print_dic(dic_current)
+
+
         if i % 2 == 0:
+            dic_current[(data[i][0], data[i][1])] = 'b'
+            my_print("==" * 20)
+            my_print_dic(dic_current)
+
             black_move(dic_current, data[i][0], data[i][1])
+
+
         else:
+            dic_current[(data[i][0], data[i][1])] = 'w'
+            my_print("==" * 20)
+            my_print_dic(dic_current)
+
             white_move(dic_current, data[i][0], data[i][1])
+
+
     my_print_dic(dic_current)
     total_b = 0
     total_w = 0
@@ -128,16 +263,19 @@ def my_run(typ, data):
 
 
 def my_test():
-    assert my_run('b', []) == [8, 8] , my_run('b', [])
-    assert my_run('a',[(5, 6)]) == [4, 1]
+    assert my_run('b', []) == [8, 8], my_run('b', [])
+    assert my_run('a', [(5, 6)]) == [4, 1]
 
-    assert my_run('c',[(1, 7), (2, 2), (2, 1)]) == [22, 13]
+    assert my_run('c', [(1, 7), (2, 2), (2, 1)]) == [22, 13], my_run('c', [(1, 7), (2, 2), (2, 1)])
+
     pass
 
 
 def my_main():
-    #my_input()
-    my_test()
+    #my_test()
 
+    typ, step_list = my_input()
+    res = my_run(typ, step_list)
+    print(" ".join([str(x) for x in res]))
 
 my_main()
