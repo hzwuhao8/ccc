@@ -1,4 +1,11 @@
 #
+#
+# 考虑极端情况
+# 没有一个可以
+# 任何一个组合都可以
+# 如何穷举法
+
+
 import copy
 
 base_motels = [0, 990, 1010, 1970, 2030, 2940,
@@ -7,7 +14,7 @@ base_motels = [0, 990, 1010, 1970, 2030, 2940,
 
 
 def my_print(x, end="\n"):
-    # print(x, end=end)
+    print(x, end=end)
     pass
 
 
@@ -132,9 +139,19 @@ def my_unit_test():
     # my_run_2(970, 1040, [990, 20, 960, 60, 910, 120, 870, 130, 910, 60, 960, 20, 990], [[]], 1)
     global real_res
     real_res = []
-    my_run_2(1, 7000, [990, 20, 60 ], [], 1)
+    my_run_2(1, 7000, [990, 20, 60], [], 1)
     my_print("real_res={0}".format("\n".join([str(x) for x in real_res])))
     my_print(len(real_res))
+    real_res = []
+    my_run_2(1000, 1001, [1000, 20, 60], [], 1)
+    my_print("real_res={0}".format("\n".join([str(x) for x in real_res])))
+    my_print(len(real_res))
+
+    real_res = []
+    my_run_2(1000, 1001, [1000, 20, ], [], 1)
+    my_print("real_res={0}".format("\n".join([str(x) for x in real_res])))
+    my_print(len(real_res))
+
     # assert 1 == 0
     pass
 
@@ -149,9 +166,9 @@ def my_func_test():
 
 def my_main():
     global real_res
-    # my_print("==unit==" * 10)
-    # my_unit_test()
-    # quit()
+    my_print("==unit==" * 10)
+    my_unit_test()
+    quit()
     #my_print("==func==" * 10)
     #my_func_test()
     #quit()
