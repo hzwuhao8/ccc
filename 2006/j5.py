@@ -59,6 +59,7 @@ for i in range(1, 9):
     dic_c[(i, 5)] = 'W'
     dic_c[(i, 6)] = 'W'
 
+
 def tt():
     my_print("==="*20)
     my_print_dic(dic_a)
