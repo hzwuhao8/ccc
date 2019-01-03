@@ -24,14 +24,13 @@ def get_x_y(c):
     for i in range(5):
         for j in range(6):
             if base_data[i][j] == c:
-                return (i, j)
+                return i, j
             else:
                 continue
     print("c={0} ERROR".format(c))
 
 
 def my_move(f, to):
-
     (x1, y1) = get_x_y(f)
     (x2, y2) = get_x_y(to)
     steps = abs(x1 - x2) + abs(y1 - y2)
@@ -41,8 +40,8 @@ def my_move(f, to):
 def my_run(data):
     total = 0
     f = 'A'
-    data_list = list(data)
-    data_list.append("\n")
+    data_list = list(data + "\n")
+
     for t in data_list:
         steps = my_move(f, t)
         my_print("f={0} t={1} steps={2}".format(f, t, steps))
@@ -66,7 +65,7 @@ def my_unit_test():
 
 
 def my_func_test():
-    assert my_run("GPS") == 15 , my_run("GPS")
+    assert my_run("GPS") == 15, my_run("GPS")
     assert my_run("ECHO ROCK") == 29
     pass
 
@@ -86,6 +85,6 @@ def my_main():
 
 my_main_test()
 
-#quit()
+# quit()
 
 my_main()
