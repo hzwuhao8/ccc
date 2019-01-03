@@ -12,8 +12,17 @@ def my_input():
     pass
 
 
+base_data = [list('ABCDEF'),
+             list('GHIJKL'),
+             list('MNOPQR'),
+             list('STUVWX'),
+             list('YZ - . \n'),
+             ]
+
+
 def my_move(form, to):
     steps = 0
+
     return steps
 
 
@@ -22,6 +31,9 @@ def my_run(data):
 
 
 def my_unit_test():
+    assert len(base_data) == 5
+    assert len(base_data[2]) == 5
+    assert base_data[3][2] == 'U'
     assert my_move('A', 'A') == 0
     assert my_move('A', 'G') == 1
     assert my_move('G', 'P') == 4
