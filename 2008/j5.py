@@ -51,14 +51,14 @@ VALID = ((2, 1, 0, 2),
 
 
 def is_exist(v, data):
-    my_print("v={0} data={1}".format(v, data))
+    # my_print("v={0} data={1}".format(v, data))
     tmp = [data[i] - v[i] >= 0 for i in range(4)]
     return tmp.count(True) == 4
 
 
 # 得到 所有可能的 取法
 def get_all_method(data):
-    my_print("get_all_method({0})".format(data))
+    # my_print("get_all_method({0})".format(data))
     res = []
     for v in VALID:
         if is_exist(v, data):
@@ -67,7 +67,42 @@ def get_all_method(data):
     pass
 
 
+# 如何进行 递归？
+
+def find_best(steps, data, path, layer):
+    layer_str = " {0} ".format(layer) * layer
+    my_print("{0}{1}".format(layer_str, "====" * 5 * (layer + 1)))
+    my_print("{0} data={1}".format(layer_str, data))
+    my_print("{0} path={1}".format(layer_str, path))
+    new_steps = get_all_method(data)
+    my_print("{0} new_steps={1}".format(layer_str, new_steps))
+    if len(new_steps) == 0:
+        my_print("{0} steps={1}".format(layer_str, steps))
+        my_print("{0} data={1}".format(layer_str, data))
+        steps.append(path)
+        return steps
+        pass
+    else:
+        for step in new_steps:
+            next_data = [data[i] - step[i] for i in range(4)]
+            tmp_list = list(path)
+            tmp_list.append(step)
+            next_path = tuple(tmp_list)
+
+            find_best(steps, next_data, next_path, layer + 1)
+
+
 def my_run(data):
+    my_print("my_run data={0}".format(data))
+    steps = []
+    find_best(steps, data, (), 0)
+    for p in steps:
+        my_print(p)
+
+    if len(steps) % 2 == 1:
+        return R
+    else:
+        return P
     pass
 
 
