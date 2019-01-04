@@ -99,10 +99,11 @@ def my_run(data):
     for p in steps:
         my_print(p)
 
-    if len(steps) % 2 == 1:
-        return R
-    else:
-        return P
+    for p in steps:
+        if len(p) % 2 == 0:
+            my_print(p)
+
+    return P
     pass
 
 
