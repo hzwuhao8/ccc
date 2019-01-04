@@ -28,7 +28,7 @@ TEST_RESULT = [R, P, R, R, R, P]
 
 
 def my_print(x, end="\n"):
-    # print(x, end=end)
+    print(x, end=end)
     pass
 
 
@@ -71,23 +71,38 @@ def get_all_method(data):
 total = 0
 
 
-def find_best(steps, data, path, layer):
+def find_best(steps, data, path, layer, p0_fails):
     global total
-    #print("layer={0}".format(layer))
+    # print("layer={0}".format(layer))
     layer_str = " {0} ".format(layer) * layer
     my_print("{0}{1}".format(layer_str, "====" * 5 * (layer + 1)))
     my_print("{0} data={1}".format(layer_str, data))
     my_print("{0} path={1}".format(layer_str, path))
+    if len(path) >= 1 and path[0] in p0_fails:
+        return False
     new_steps = get_all_method(data)
     my_print("{0} new_steps={1}".format(layer_str, new_steps))
     if len(new_steps) == 0:
         my_print("{0} steps={1}".format(layer_str, steps))
         my_print("{0} data={1}".format(layer_str, data))
-        steps.append(path)
+
         total += 1
         if total % 100 == 0:
             print("total={0}".format(total))
-        return steps
+
+        if len(path) % 2 == 0:
+            my_print("P 失败，len(path)={1} , data={0}".format(data, len(path)))
+            if len(path) >= 1:
+                p0 = path[0]
+                if p0 not in p0_fails:
+                    p0_fails.append(p0)
+
+                    steps2 = [path for path in steps if path[0] != p0]
+                    steps[:] = steps2
+            return False
+        else:
+            steps.append(path)
+            return True
         pass
     else:
         for step in new_steps:
@@ -96,13 +111,15 @@ def find_best(steps, data, path, layer):
             tmp_list.append(step)
             next_path = tuple(tmp_list)
 
-            find_best(steps, next_data, next_path, layer + 1)
+            flag = find_best(steps, next_data, next_path, layer + 1, p0_fails)
+            # if not flag:
+            #    break
 
 
 def my_run(data):
     my_print("my_run data={0}".format(data))
     steps = []
-    find_best(steps, data, (), 0)
+    find_best(steps, data, (), 0, [])
     for p in steps:
         my_print(p)
 
@@ -128,8 +145,11 @@ def my_run(data):
                     break
         if tmp_res:
             last_res.append(p0)
-
-    if last_res:
+    print("last_res={0}".format(last_res))
+    step2 = [path for path in steps if len(path) % 2 == 1]
+    my_print("steps={0}".format(steps))
+    my_print("step2={0}".format(step2))
+    if step2:
         return P
     else:
         return R
