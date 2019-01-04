@@ -18,6 +18,12 @@ class Tree():
     def __str__(self):
         return prefix_str(self)
 
+    def __repr__(self):
+        return prefix_str(self)
+
+    def isdigit(self):
+        return False
+
 
 def prefix_str(tree):
     if tree.op == "":
@@ -47,7 +53,7 @@ def postfix_str(tree):
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -93,7 +99,61 @@ def to_tree(data, layer=0):
     return tree
 
 
+def is_op(c):
+    return c == '+' or c == "-"
+
+
+def is_exp(c):
+    return isinstance(type(c), Tree) or (c.isdigit and c != "-")
+
+
+# 合并 最上面的三个元素
+def stack_merger(stack):
+    if len(stack) >= 3:
+        c3 = stack[-1]
+        c2 = stack[-2]
+        c1 = stack[-3]
+        my_print("c1= {0} c2= {1} c3= {2}".format(c1, c2, c3))
+        # my_print("c1 is_op={0} c2 is_exp={1} c3 is_exp={2}".format(is_op(c1), is_exp(c2), is_exp(c3)))
+        if is_op(c1) and not is_op(c2) and not is_op(c3):
+            if is_exp(c2) and is_exp(c3):
+                stack.pop()
+                stack.pop()
+                stack.pop()
+                t = Tree(c1, c2, c3)
+                my_print("t={0}".format(t))
+                stack.append(t)
+                my_print("stack={0}".format(stack))
+                stack_merger(stack)
+            else:
+                return
+        else:
+            return
+    else:
+        return
+
+
 def to_tree_stack(data):
+    my_print("to_tree_stack data={0}".format(data))
+    stack_a = []
+    for c in data:
+        stack_a.append(c)
+        stack_merger(stack_a)
+
+    my_print("stack_a={0}".format(stack_a))
+    stack_merger(stack_a)
+    my_print("stack_a={0}".format(stack_a))
+    if len(stack_a) == 1:
+        if isinstance(stack_a[0], Tree):
+            return stack_a[0]
+        else:
+            return Tree("", stack_a[0], "")
+    elif len(stack_a) == 3:
+        return Tree(stack_a[0], stack_a[1], stack_a[2], )
+    return stack_a
+
+
+def to_tree_stack_a(data):
     stack_a = []
     my_print(data)
     for c in data:
@@ -109,24 +169,15 @@ def to_tree_stack(data):
                     my_print("c={2} c1 ={0} c2 ={1}".format(c1, c2, c))
                     t1 = Tree(c2, c1, c)
                     my_print("t1={0}".format(t1))
-                    if len(stack_a) >= 2:
-                        c1 = stack_a[-1]
-                        c2 = stack_a[-2]
-                        if isinstance(c1, Tree) or c1.isdigit():
-                            c1 = stack_a.pop()
-                            c2 = stack_a.pop()
-                            t2 = Tree(c2, c1, t1)
-                            stack_a.append(t2)
-                        else:
-                            stack_a.append(t1)
-                    else:
-                        stack_a.append(t1)
+                    stack_a.append(t1)
+
                 else:
                     stack_a.append(c)
             else:
                 stack_a.append(c)
         else:
             stack_a.append(c)
+
     my_print("stack_a={0}".format(stack_a))
     if len(stack_a) == 1:
         if isinstance(stack_a[0], Tree):
@@ -134,7 +185,7 @@ def to_tree_stack(data):
         else:
             return Tree("", stack_a[0], "")
     elif len(stack_a) == 3:
-        return Tree(stack_a[0], stack_a[1], stack_a[2],)
+        return Tree(stack_a[0], stack_a[1], stack_a[2], )
 
 
 def my_run(data_str):
@@ -166,6 +217,13 @@ def my_func_test():
     assert my_run("- - 3 + 2 1 9") == "3 2 1 + - 9 -"
     assert my_run("+ + + 9 8 7 6") == "9 8 + 7 + 6 +"
     assert my_run("+ 1 + + 2 3 - 4 5") == "1 2 3 + 4 5 - + +"
+
+    my_print("=x=x=" * 20)
+    s1 = "+ 1 + + 2 3 - 4 5"
+    s2 = "+ + + 9 8 7 6"
+
+    s = ("+ {0} {1}".format(s1, s2))
+    assert prefix_str(to_tree_stack(s.split())) == s
     pass
 
 
@@ -185,6 +243,6 @@ def my_main():
 
 my_main_test()
 
-#quit()
+# quit()
 
 my_main()
