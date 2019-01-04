@@ -28,7 +28,7 @@ TEST_RESULT = [R, P, R, R, R, P]
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -68,8 +68,12 @@ def get_all_method(data):
 
 
 # 如何进行 递归？
+total = 0
+
 
 def find_best(steps, data, path, layer):
+    global total
+    #print("layer={0}".format(layer))
     layer_str = " {0} ".format(layer) * layer
     my_print("{0}{1}".format(layer_str, "====" * 5 * (layer + 1)))
     my_print("{0} data={1}".format(layer_str, data))
@@ -80,6 +84,9 @@ def find_best(steps, data, path, layer):
         my_print("{0} steps={1}".format(layer_str, steps))
         my_print("{0} data={1}".format(layer_str, data))
         steps.append(path)
+        total += 1
+        if total % 100 == 0:
+            print("total={0}".format(total))
         return steps
         pass
     else:
@@ -99,11 +106,33 @@ def my_run(data):
     for p in steps:
         my_print(p)
 
+    is_P = False
+    all_p = []
     for p in steps:
-        if len(p) % 2 == 0:
-            my_print(p)
+        if len(p) % 2 == 1:
+            my_print("P 获胜\t{0}".format(p))
+            all_p.append(p)
+            is_P = True
 
-    return P
+    step0_list = [path[0] for path in all_p]
+
+    # 统计 获得胜利的 p0  的路径的数量
+    # 统计 全部 中p0 获得胜利的 路径数量； 或者是 p0 开始的 都是胜利的
+    last_res = []
+    for p0 in step0_list:
+        tmp_res = True
+        for pp in steps:
+            if pp[0] == p0:
+                if len(pp) % 2 == 0:
+                    tmp_res = False
+                    break
+        if tmp_res:
+            last_res.append(p0)
+
+    if last_res:
+        return P
+    else:
+        return R
     pass
 
 
@@ -120,6 +149,7 @@ def my_unit_test():
 
 def my_func_test():
     for i in range(len(TEST_DATA)):
+        print(TEST_DATA[i])
         assert my_run(TEST_DATA[i]) == TEST_RESULT[i], my_run(TEST_DATA[i])
 
     pass
