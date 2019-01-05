@@ -5,7 +5,7 @@ import time
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -224,6 +224,7 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), a=[-9999], b=[9999
     if not steps:
         if layer % 2 == 1:
             tree.add_node(Node(P, 1))
+            tree.node.static_value = 1
         else:
             tree.add_node(Node(R, -1))
             # 能够 到达 这里的 都不用选择吗？
