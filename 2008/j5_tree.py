@@ -5,17 +5,19 @@ import time
 
 
 def my_print(x, end="\n"):
-    # print(x, end=end)
+    print(x, end=end)
     pass
 
 
 class Node:
-    def __init__(self, action, static_value=0):
+    def __init__(self, action, static_value=0, a=-9, b=9):
         self.action = action
         self.static_value = static_value
+        self.a = a
+        self.b = b
 
     def __repr__(self):
-        return "{0}, {1}".format(self.action, self.static_value)
+        return "{0}, {1},a={2},b={3}".format(self.action, self.static_value, self.a, self.b)
 
 
 class Tree:
@@ -214,9 +216,12 @@ def find_all_path(data, layer=0, tree=Tree(Node("root"))):
             find_all_path(next_data, layer + 1, t)
 
 
-def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), a=[-9999], b=[9999]):
-    my_print("  " * layer + "layer={0} data={1}  tree={2}".format(layer, data, tree))
-    if a[0] > b[0]:
+def find_all_path_a_b(data, layer=0, tree=Tree(Node("root"))):
+    a = tree.node.a
+    b = tree.node.b
+    my_print("  " * layer + "layer={0} data={1} tree={2},a={3},b={4}".format(layer, data, tree, a, b))
+    if a > b:
+        tree.node.static_value == -1
         return tree
     if tree.node.static_value == -1:
         return tree
@@ -225,11 +230,13 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), a=[-9999], b=[9999
         if layer % 2 == 1:
             tree.add_node(Node(P, 1))
             tree.node.static_value = 1
+            tree.node.a = 1
         else:
             tree.add_node(Node(R, -1))
             # 能够 到达 这里的 都不用选择吗？
             # 至少 他的上一层 是不用再考虑了
             tree.node.static_value = -1
+            tree.node.b = -1
 
         return tree
         pass
@@ -238,19 +245,24 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), a=[-9999], b=[9999
         tmp_list = []
         for step in steps:
             next_data = [data[i] - step[i] for i in range(4)]
-            t = Tree(Node(step))
+            t = Tree(Node(step, 0, a, b))
             tree.add_sub_tree(t)
-            find_all_path_a_b(next_data, layer + 1, t, a, b)
+            find_all_path_a_b(next_data, layer + 1, t)
             tmp_list.append(t)
-        #对 a b 进行修正
+        # 对 a b 进行修正
         val_list = [t.node.static_value for t in tmp_list]
         if layer % 2 == 0:
             max_val = max(val_list)
             tree.node.static_value = max_val
+
+            if max_val > tree.node.a:
+                tree.node.a = max_val
         else:
             min_val = min(val_list)
             tree.node.static_value = min_val
-
+            if min_val < tree.node.b:
+                tree.node.b = min_val
+        my_print("tree=\n{0}".format(tree))
 
 def my_run(data):
     s1 = time.time()
@@ -274,7 +286,7 @@ def my_run(data):
 
 
 def my_func_test():
-    for i in range(0, 5):
+    for i in range(3, 4):
         print(TEST_DATA[i])
         assert my_run(TEST_DATA[i]) == TEST_RESULT[i], my_run(TEST_DATA[i])
 
