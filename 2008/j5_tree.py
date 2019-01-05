@@ -1,6 +1,7 @@
 # 需要 使用tree
 
 import copy
+import time
 
 
 def my_print(x, end="\n"):
@@ -118,6 +119,29 @@ def my_min_max(tree, flag="max"):
             return tmp_value
 
 
+def my_min_max_a_b(tree, flag="max", a=[-9999], b=[9999]):
+    if a[0] > b[0]:
+        return;
+    if len(tree.sub_tree) == 0:
+        return tree.node.static_value
+    else:
+        if flag == "max":
+
+            value_list = [my_min_max_a_b(t, "min", a, b) for t in tree.sub_tree]
+            tmp_value = max(value_list)
+            tree.node.static_value = tmp_value
+            if tmp_value > a[0]:
+                a[0] = tmp_value
+            return tmp_value
+        else:
+            value_list = [my_min_max_a_b(t, "max", a, b) for t in tree.sub_tree]
+            tmp_value = min(value_list)
+            tree.node.static_value = tmp_value
+            if tmp_value < b[0]:
+                b[0] = tmp_value
+            return tmp_value
+
+
 # 计算完成后显示 计算 路径
 def my_path(tree, path=[]):
     if not tree.sub_tree:
@@ -190,15 +214,58 @@ def find_all_path(data, layer=0, tree=Tree(Node("root"))):
             find_all_path(next_data, layer + 1, t)
 
 
+def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), a=[-9999], b=[9999]):
+    my_print("  " * layer + "layer={0} data={1}  tree={2}".format(layer, data, tree))
+    if a[0] > b[0]:
+        return tree
+    if tree.node.static_value == -1:
+        return tree
+    steps = get_all_method(data)
+    if not steps:
+        if layer % 2 == 1:
+            tree.add_node(Node(P, 1))
+        else:
+            tree.add_node(Node(R, -1))
+            # 能够 到达 这里的 都不用选择吗？
+            # 至少 他的上一层 是不用再考虑了
+            tree.node.static_value = -1
+
+        return tree
+        pass
+    else:
+        # 这一步可以 计算 a,b
+        tmp_list = []
+        for step in steps:
+            next_data = [data[i] - step[i] for i in range(4)]
+            t = Tree(Node(step))
+            tree.add_sub_tree(t)
+            find_all_path_a_b(next_data, layer + 1, t, a, b)
+            tmp_list.append(t)
+        #对 a b 进行修正
+        val_list = [t.node.static_value for t in tmp_list]
+        if layer % 2 == 0:
+            max_val = max(val_list)
+            tree.node.static_value = max_val
+        else:
+            min_val = min(val_list)
+            tree.node.static_value = min_val
+
+
 def my_run(data):
+    s1 = time.time()
+
     tree = Tree(Node("root"))
-    find_all_path(data, 0, tree)
+    find_all_path_a_b(data, 0, tree)
     my_print("tree={0}".format(tree))
     root2 = copy.deepcopy(tree)
-
-    my_min_max(root2, "max")
+    s2 = time.time()
+    # my_min_max_a_b(root2, "max")
+    s3 = time.time()
     my_print(root2)
     my_print("my_path={0}".format(my_path(root2)))
+    s4 = time.time()
+
+    print("search:{0} min_max={1}".format(s2 - s1, s3 - s2))
     if root2.node.static_value == 1:
         return P
     else:
@@ -212,5 +279,6 @@ def my_func_test():
 
     pass
 
-#my_unit_test_a()
+
+# my_unit_test_a()
 my_func_test()
