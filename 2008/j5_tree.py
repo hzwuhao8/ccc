@@ -5,16 +5,17 @@ import time
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
 class Node:
-    def __init__(self, action, static_value=0, a=-9, b=9):
+    def __init__(self, action, static_value=0, a=-9, b=9, parent=None):
         self.action = action
         self.static_value = static_value
         self.a = a
         self.b = b
+        self.parent = parent
 
     def __repr__(self):
         return "{0}, {1},a={2},b={3}".format(self.action, self.static_value, self.a, self.b)
@@ -25,6 +26,7 @@ class Tree:
         self.node = node
         self.layer = layer
         self.sub_tree = []
+        node.parent = self
 
     def add_sub_tree(self, tree):
         self.sub_tree.append(tree)
@@ -32,6 +34,7 @@ class Tree:
 
     def add_node(self, node):
         tmp_tree = Tree(node, self.layer + 1)
+        node.parent = self
         self.sub_tree.append(tmp_tree)
 
     def __repr__(self):
@@ -221,6 +224,7 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root"))):
     b = tree.node.b
     my_print("  " * layer + "layer={0} data={1} tree={2},a={3},b={4}".format(layer, data, tree, a, b))
     if a > b:
+        my_print("裁剪了分支 ")
         tree.node.static_value == -1
         return tree
     if tree.node.static_value == -1:
@@ -249,20 +253,29 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root"))):
             tree.add_sub_tree(t)
             find_all_path_a_b(next_data, layer + 1, t)
             tmp_list.append(t)
-        # 对 a b 进行修正
-        val_list = [t.node.static_value for t in tmp_list]
-        if layer % 2 == 0:
-            max_val = max(val_list)
-            tree.node.static_value = max_val
+            tmp_val = t.node.static_value
+            if layer % 2 == 1:
+                max_val = tmp_val
+                tree.node.static_value = max_val
 
-            if max_val > tree.node.a:
-                tree.node.a = max_val
-        else:
-            min_val = min(val_list)
-            tree.node.static_value = min_val
-            if min_val < tree.node.b:
-                tree.node.b = min_val
+                if max_val > tree.node.a:
+                    tree.node.a = max_val
+                if tree.node.a > tree.node.b:
+                    break
+                if tree.node.parent.node.b > max_val:
+                    tree.node.parent.node.b = max_val
+            else:
+                min_val = tmp_val
+                tree.node.static_value = min_val
+                if min_val < tree.node.b:
+                    tree.node.b = min_val
+                if tree.node.a > tree.node.b:
+                    break
+                if tree.node.parent.node.a < min_val:
+                    tree.node.parent.node.a = min_val
+
         my_print("tree=\n{0}".format(tree))
+
 
 def my_run(data):
     s1 = time.time()
@@ -286,12 +299,21 @@ def my_run(data):
 
 
 def my_func_test():
-    for i in range(3, 4):
+    for i in range(2, 5):
         print(TEST_DATA[i])
         assert my_run(TEST_DATA[i]) == TEST_RESULT[i], my_run(TEST_DATA[i])
 
     pass
 
 
+def my_unit_test_find():
+    data = TEST_DATA[5]
+    tree = Tree(Node("root"))
+    find_all_path_a_b(data, 0, tree)
+
+    my_print(tree.node)
+
+
+#my_unit_test_find()
 # my_unit_test_a()
 my_func_test()
