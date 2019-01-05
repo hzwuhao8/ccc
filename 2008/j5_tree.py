@@ -25,7 +25,7 @@ class Tree:
 
     def add_sub_tree(self, tree):
         self.sub_tree.append(tree)
-        tree.layer += 1
+        tree.layer = self.layer + 1
 
     def add_node(self, node):
         tmp_tree = Tree(node, self.layer + 1)
@@ -131,4 +131,86 @@ def my_path(tree, path=[]):
                 return path
 
 
-my_unit_test_a()
+# 所有合法的取法
+VALID = ((2, 1, 0, 2),
+         (1, 1, 1, 1),
+         (0, 0, 2, 1),
+         (0, 3, 0, 0),
+         (1, 0, 0, 1),
+         )
+
+R = "Roland"
+P = "Patrick"
+
+TEST_DATA = [
+    [0, 2, 0, 2],
+    [1, 3, 1, 3],
+    [1, 5, 0, 3],
+    [3, 3, 3, 3],
+    [8, 8, 6, 7],
+    [8, 8, 8, 8],
+]
+
+TEST_RESULT = [R, P, R, R, R, P]
+
+
+def is_validate(v, data):
+    # my_print("v={0} data={1}".format(v, data))
+    tmp = [data[i] - v[i] >= 0 for i in range(4)]
+    return tmp.count(True) == 4
+
+
+# 得到 所有可能的 取法
+def get_all_method(data):
+    # my_print("get_all_method({0})".format(data))
+    res = []
+    for v in VALID:
+        if is_validate(v, data):
+            res.append(v)
+    return set(res)
+    pass
+
+
+def find_all_path(data, layer=0, tree=Tree(Node("root"))):
+    my_print("  " * layer + "layer={0} data={1}  tree={2}".format(layer, data, tree))
+    steps = get_all_method(data)
+    if not steps:
+        if layer % 2 == 1:
+            tree.add_node(Node(P, 1))
+        else:
+            tree.add_node(Node(R, -1))
+
+        return tree
+        pass
+    else:
+        for step in steps:
+            next_data = [data[i] - step[i] for i in range(4)]
+            t = Tree(Node(step))
+            tree.add_sub_tree(t)
+            find_all_path(next_data, layer + 1, t)
+
+
+def my_run(data):
+    tree = Tree(Node("root"))
+    find_all_path(data, 0, tree)
+    my_print("tree={0}".format(tree))
+    root2 = copy.deepcopy(tree)
+
+    my_min_max(root2, "max")
+    my_print(root2)
+    my_print("my_path={0}".format(my_path(root2)))
+    if root2.node.static_value == 1:
+        return P
+    else:
+        return R
+
+
+def my_func_test():
+    for i in range(0, 5):
+        print(TEST_DATA[i])
+        assert my_run(TEST_DATA[i]) == TEST_RESULT[i], my_run(TEST_DATA[i])
+
+    pass
+
+#my_unit_test_a()
+my_func_test()
