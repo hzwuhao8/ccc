@@ -288,11 +288,11 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
                 if tree.node.a > tree.node.b:
                     my_print("裁剪 layer ={0} R 其他的 sub_tree  steps={1}不用计算了".format(layer, maybe_steps[index + 1:]))
                     break
-            # 子 全部处理完成后 可以 得到 当前节点的 min-max
-            if player == P:
-                tree.node.static_value = max(val_list)
-            else:
-                tree.node.static_value = min(val_list)
+        # 子 全部处理完成后 可以 得到 当前节点的 min-max
+        if player == P:
+            tree.node.static_value = max(val_list)
+        else:
+            tree.node.static_value = min(val_list)
 
         my_print("tree=\n{0}".format(tree))
 
