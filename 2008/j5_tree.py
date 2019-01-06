@@ -342,7 +342,11 @@ def my_unit_test_find():
 # my_unit_test_find()
 # my_unit_test_a()
 
-# my_func_test()
+if os.environ.get("UNIT", None):
+    my_unit_test()
+
+if os.environ.get("FUNC", None):
+    my_func_test()
 
 
 def my_input():
