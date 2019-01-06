@@ -250,7 +250,6 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
             if tree.node.b > -2:
                 tree.node.b = -2
         return tree
-        pass
     else:
         # 这一步可以 计算 a,b
 
@@ -287,8 +286,8 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
             tree.node.static_value = max(val_list)
         else:
             tree.node.static_value = min(val_list)
-
         my_print("tree=\n{0}".format(tree))
+        return tree
 
 
 def my_run(data):
