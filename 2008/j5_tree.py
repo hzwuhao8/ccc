@@ -2,15 +2,25 @@
 
 import copy
 import time
+import os
+import sys
 
 R = "Roland"
 P = "Patrick"
 
 
 def my_print(x, end="\n"):
-    # print(x, end=end)
+    if os.environ.get('DEBUG', None):
+        print(x, file=sys.stderr, end=end)
+    else:
+        pass
 
-    pass
+
+def my_print_trace(x, end="\n"):
+    if os.environ.get('TRACE', None):
+        print(x, file=sys.stderr, end=end)
+    else:
+        pass
 
 
 class Node:
@@ -204,7 +214,7 @@ def get_all_method(data):
 
 
 def find_all_path(data, layer=0, tree=Tree(Node("root"))):
-    my_print("  " * layer + "layer={0} data={1}  tree={2}".format(layer, data, tree))
+    my_print_trace("  " * layer + "layer={0} data={1}  tree={2}".format(layer, data, tree))
     steps = get_all_method(data)
     if not steps:
         if layer % 2 == 1:
@@ -230,10 +240,10 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
     else:
         next_player = P
 
-    my_print("  " * layer + "layer={0} data={1})".format(layer, data))
+    my_print_trace("  " * layer + "layer={0} data={1})".format(layer, data))
 
-    my_print("  " * layer + "a={0},b={1},player={2},next_player={3}".format(a, b, player, next_player))
-    my_print("  " * layer + "tree={0}".format(tree))
+    my_print_trace("  " * layer + "a={0},b={1},player={2},next_player={3}".format(a, b, player, next_player))
+    my_print_trace("  " * layer + "tree={0}".format(tree))
 
     maybe_steps = get_all_method(data)
     if not maybe_steps:
@@ -279,14 +289,14 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
                 if tree.node.parent.node.a < tmp_val:
                     tree.node.parent.node.a = tmp_val
                 if tree.node.a > tree.node.b:
-                    my_print("裁剪 layer ={0} R 其他的 sub_tree  steps={1}不用计算了".format(layer, maybe_steps[index + 1:]))
+                    my_print("裁剪 layer ={0} R 其他的 sub_tree steps={1}不用计算了".format(layer, maybe_steps[index + 1:]))
                     break
         # 子 全部处理完成后 可以 得到 当前节点的 min-max
         if player == P:
             tree.node.static_value = max(val_list)
         else:
             tree.node.static_value = min(val_list)
-        my_print("tree=\n{0}".format(tree))
+        my_print_trace("tree=\n{0}".format(tree))
         return tree
 
 
