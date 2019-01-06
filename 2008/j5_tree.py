@@ -10,7 +10,7 @@ P = "Patrick"
 
 
 def my_print(x, end="\n"):
-    if os.environ.get('DEBUG', None):
+    if os.environ.get('DEBUG', None) or os.environ.get('TRACE', None):
         print(x, file=sys.stderr, end=end)
     else:
         pass
@@ -341,7 +341,8 @@ def my_unit_test_find():
 
 # my_unit_test_find()
 # my_unit_test_a()
-my_func_test()
+
+# my_func_test()
 
 
 def my_input():
