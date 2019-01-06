@@ -266,10 +266,6 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
             val_list.append(tmp_val)
             # P 取 max; 父节点取 b min
             if player == P:
-
-                if tree.node.static_value < tmp_val:
-                    tree.node.static_value = tmp_val
-
                 if tmp_val > tree.node.a:
                     tree.node.a = tmp_val
                 if tree.node.parent.node.b > tmp_val:
@@ -279,8 +275,6 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
                     break
             # R, 取 min ; 父节点取 a max
             else:
-                if tree.node.static_value > tmp_val:
-                    tree.node.static_value = tmp_val
                 if tmp_val < tree.node.b:
                     tree.node.b = tmp_val
                 if tree.node.parent.node.a < tmp_val:
