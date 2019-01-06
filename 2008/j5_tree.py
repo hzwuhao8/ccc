@@ -320,7 +320,7 @@ def my_run(data):
     my_print("my_path={0}".format(my_path(root2)))
     s4 = time.time()
 
-    print("search:{0} min_max={1}".format(s2 - s1, s3 - s2))
+    # print("search:{0} min_max={1}".format(s2 - s1, s3 - s2))
     if root2.node.static_value == 1:
         return P
     else:
@@ -330,7 +330,7 @@ def my_run(data):
 def my_func_test():
     for i in range(0, 6):
         my_print("*=={0}==*".format(i) * 4)
-        print(TEST_DATA[i])
+        # print(TEST_DATA[i])
         res = my_run(TEST_DATA[i])
         assert res == TEST_RESULT[i], res
 
@@ -348,3 +348,24 @@ def my_unit_test_find():
 # my_unit_test_find()
 # my_unit_test_a()
 my_func_test()
+
+
+def my_input():
+    t = int(input())
+    input_data_list = []
+    for i in range(t):
+        input_data = [int(x) for x in input().split()]
+        input_data_list.append(input_data)
+    return input_data_list
+    pass
+
+
+def my_main():
+    data_list = my_input()
+    #print(data_list)
+    for data in data_list:
+        res = my_run(data)
+        print(res)
+
+
+my_main()
