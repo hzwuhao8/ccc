@@ -131,7 +131,7 @@ def my_min_max(tree, flag="max"):
 
 def my_min_max_a_b(tree, flag="max", a=[-9999], b=[9999]):
     if a[0] > b[0]:
-        return;
+        return
     if len(tree.sub_tree) == 0:
         return tree.node.static_value
     else:
@@ -235,17 +235,8 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
     my_print("  " * layer + "a={0},b={1},player={2},next_player={3}".format(a, b, player, next_player))
     my_print("  " * layer + "tree={0}".format(tree))
 
-    if a >= b:
-        my_print("裁剪了分支 这一步 似乎不应该执行到， XXXXXX; 因为在 处理 其余步骤的时候 会被 触发 这里的 a=-9,b=9 不会变的")
-        if player == P:
-            tree.node.static_value == 1
-        else:
-            tree.node.static_value == -2
-
-        return tree
-
-    steps = get_all_method(data)
-    if not steps:
+    maybe_steps = get_all_method(data)
+    if not maybe_steps:
         if player == R:
             tree.add_node(Node(P, 1, player=next_player))
             tree.node.static_value = 1
@@ -258,22 +249,22 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
             tree.node.static_value = -2
             if tree.node.b > -2:
                 tree.node.b = -2
-
         return tree
         pass
     else:
         # 这一步可以 计算 a,b
-        tmp_list = []
+
         val_list = []
-        for index in range(len(steps)):
-            step = steps[index]
+        for index in range(len(maybe_steps)):
+            step = maybe_steps[index]
             next_data = [data[i] - step[i] for i in range(4)]
             t = Tree(Node(step, 0, a, b, player=player))
             tree.add_sub_tree(t)
-            find_all_path_a_b(next_data, layer + 1, t, next_player)
-            tmp_list.append(t)
+            find_all_path_a_b(next_data, layer + 1, t, next_player)  # 对下面一层 进行 搜索
+
             tmp_val = t.node.static_value
             val_list.append(tmp_val)
+            # P 取 max; 父节点取 b min
             if player == P:
 
                 if tree.node.static_value < tmp_val:
@@ -284,9 +275,9 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
                 if tree.node.parent.node.b > tmp_val:
                     tree.node.parent.node.b = tmp_val
                 if tree.node.a > tree.node.b:
-                    my_print("裁剪 layer ={0} P 其他的 sub_tree steps={1}不用计算了".format(layer, steps[index + 1:]))
+                    my_print("裁剪 layer ={0} P 其他的 sub_tree steps={1}不用计算了".format(layer, maybe_steps[index + 1:]))
                     break
-
+            # R, 取 min ; 父节点取 a max
             else:
                 if tree.node.static_value > tmp_val:
                     tree.node.static_value = tmp_val
@@ -295,7 +286,7 @@ def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
                 if tree.node.parent.node.a < tmp_val:
                     tree.node.parent.node.a = tmp_val
                 if tree.node.a > tree.node.b:
-                    my_print("裁剪 layer ={0} R 其他的 sub_tree  steps={1}不用计算了".format(layer, steps[index + 1:]))
+                    my_print("裁剪 layer ={0} R 其他的 sub_tree  steps={1}不用计算了".format(layer, maybe_steps[index + 1:]))
                     break
             # 子 全部处理完成后 可以 得到 当前节点的 min-max
             if player == P:
@@ -362,7 +353,7 @@ def my_input():
 
 def my_main():
     data_list = my_input()
-    #print(data_list)
+    # print(data_list)
     for data in data_list:
         res = my_run(data)
         print(res)
