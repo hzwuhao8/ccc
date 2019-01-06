@@ -3,22 +3,27 @@
 import copy
 import time
 
+R = "Roland"
+P = "Patrick"
+
 
 def my_print(x, end="\n"):
     # print(x, end=end)
+
     pass
 
 
 class Node:
-    def __init__(self, action, static_value=0, a=-9, b=9, parent=None):
+    def __init__(self, action, static_value=0, a=-9, b=9, parent=None, player=P):
         self.action = action
         self.static_value = static_value
         self.a = a
         self.b = b
         self.parent = parent
+        self.player = player
 
     def __repr__(self):
-        return "{0}, {1},a={2},b={3}".format(self.action, self.static_value, self.a, self.b)
+        return "{4}{0}, {1}, a={2},b={3}".format(self.action, self.static_value, self.a, self.b, self.player)
 
 
 class Tree:
@@ -168,9 +173,6 @@ VALID = ((2, 1, 0, 2),
          (1, 0, 0, 1),
          )
 
-R = "Roland"
-P = "Patrick"
-
 TEST_DATA = [
     [0, 2, 0, 2],
     [1, 3, 1, 3],
@@ -196,7 +198,8 @@ def get_all_method(data):
     for v in VALID:
         if is_validate(v, data):
             res.append(v)
-    return set(res)
+
+    return res
     pass
 
 
@@ -219,60 +222,86 @@ def find_all_path(data, layer=0, tree=Tree(Node("root"))):
             find_all_path(next_data, layer + 1, t)
 
 
-def find_all_path_a_b(data, layer=0, tree=Tree(Node("root"))):
+def find_all_path_a_b(data, layer=0, tree=Tree(Node("root")), player=P):
     a = tree.node.a
     b = tree.node.b
-    my_print("  " * layer + "layer={0} data={1} tree={2},a={3},b={4}".format(layer, data, tree, a, b))
-    if a > b:
-        my_print("裁剪了分支 ")
-        tree.node.static_value == -1
+    if player == P:
+        next_player = R
+    else:
+        next_player = P
+
+    my_print("  " * layer + "layer={0} data={1})".format(layer, data))
+
+    my_print("  " * layer + "a={0},b={1},player={2},next_player={3}".format(a, b, player, next_player))
+    my_print("  " * layer + "tree={0}".format(tree))
+
+    if a >= b:
+        my_print("裁剪了分支 这一步 似乎不应该执行到， XXXXXX; 因为在 处理 其余步骤的时候 会被 触发 这里的 a=-9,b=9 不会变的")
+        if player == P:
+            tree.node.static_value == 1
+        else:
+            tree.node.static_value == -2
+
         return tree
-    if tree.node.static_value == -1:
-        return tree
+
     steps = get_all_method(data)
     if not steps:
-        if layer % 2 == 1:
-            tree.add_node(Node(P, 1))
+        if player == R:
+            tree.add_node(Node(P, 1, player=next_player))
             tree.node.static_value = 1
-            tree.node.a = 1
+            if tree.node.a < 1:
+                tree.node.a = 1
         else:
-            tree.add_node(Node(R, -1))
+            tree.add_node(Node(R, -2, player=next_player))
             # 能够 到达 这里的 都不用选择吗？
             # 至少 他的上一层 是不用再考虑了
-            tree.node.static_value = -1
-            tree.node.b = -1
+            tree.node.static_value = -2
+            if tree.node.b > -2:
+                tree.node.b = -2
 
         return tree
         pass
     else:
         # 这一步可以 计算 a,b
         tmp_list = []
-        for step in steps:
+        val_list = []
+        for index in range(len(steps)):
+            step = steps[index]
             next_data = [data[i] - step[i] for i in range(4)]
-            t = Tree(Node(step, 0, a, b))
+            t = Tree(Node(step, 0, a, b, player=player))
             tree.add_sub_tree(t)
-            find_all_path_a_b(next_data, layer + 1, t)
+            find_all_path_a_b(next_data, layer + 1, t, next_player)
             tmp_list.append(t)
             tmp_val = t.node.static_value
-            if layer % 2 == 1:
-                max_val = tmp_val
-                tree.node.static_value = max_val
+            val_list.append(tmp_val)
+            if player == P:
 
-                if max_val > tree.node.a:
-                    tree.node.a = max_val
+                if tree.node.static_value < tmp_val:
+                    tree.node.static_value = tmp_val
+
+                if tmp_val > tree.node.a:
+                    tree.node.a = tmp_val
+                if tree.node.parent.node.b > tmp_val:
+                    tree.node.parent.node.b = tmp_val
                 if tree.node.a > tree.node.b:
+                    my_print("裁剪 layer ={0} P 其他的 sub_tree steps={1}不用计算了".format(layer, steps[index + 1:]))
                     break
-                if tree.node.parent.node.b > max_val:
-                    tree.node.parent.node.b = max_val
+
             else:
-                min_val = tmp_val
-                tree.node.static_value = min_val
-                if min_val < tree.node.b:
-                    tree.node.b = min_val
+                if tree.node.static_value > tmp_val:
+                    tree.node.static_value = tmp_val
+                if tmp_val < tree.node.b:
+                    tree.node.b = tmp_val
+                if tree.node.parent.node.a < tmp_val:
+                    tree.node.parent.node.a = tmp_val
                 if tree.node.a > tree.node.b:
+                    my_print("裁剪 layer ={0} R 其他的 sub_tree  steps={1}不用计算了".format(layer, steps[index + 1:]))
                     break
-                if tree.node.parent.node.a < min_val:
-                    tree.node.parent.node.a = min_val
+            # 子 全部处理完成后 可以 得到 当前节点的 min-max
+            if player == P:
+                tree.node.static_value = max(val_list)
+            else:
+                tree.node.static_value = min(val_list)
 
         my_print("tree=\n{0}".format(tree))
 
@@ -287,7 +316,7 @@ def my_run(data):
     s2 = time.time()
     # my_min_max_a_b(root2, "max")
     s3 = time.time()
-    my_print(root2)
+    # my_print(root2)
     my_print("my_path={0}".format(my_path(root2)))
     s4 = time.time()
 
@@ -299,9 +328,11 @@ def my_run(data):
 
 
 def my_func_test():
-    for i in range(2, 5):
+    for i in range(0, 6):
+        my_print("*=={0}==*".format(i) * 4)
         print(TEST_DATA[i])
-        assert my_run(TEST_DATA[i]) == TEST_RESULT[i], my_run(TEST_DATA[i])
+        res = my_run(TEST_DATA[i])
+        assert res == TEST_RESULT[i], res
 
     pass
 
@@ -314,6 +345,6 @@ def my_unit_test_find():
     my_print(tree.node)
 
 
-#my_unit_test_find()
+# my_unit_test_find()
 # my_unit_test_a()
 my_func_test()
