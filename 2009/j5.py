@@ -91,7 +91,7 @@ def my_s_width(graph, x, y):
     my_print("line 91 x={0},y={1}".format(x, y))
     my_print("graph=\n{0}".format(graph))
     # 题目已知条件
-    max_layer = 5
+    max_layer = 50
     path_list = [set([x])]
     node_set = set([x])
     if x == y:
@@ -117,7 +117,11 @@ def my_s_width(graph, x, y):
         my_print("path_list={0}".format(path_list))
         if y in node_set:
             break
-    return path_list
+    if y in node_set:
+        return path_list
+    else:
+        return [x]
+
 
 
 # 一层 一层扩展
@@ -202,7 +206,7 @@ def my_input():
         elif cmd == "s":
             x = int(input())
             y = int(input())
-            res = my_s(g, x, y)
+            res = my_s_width(g, x, y)
             if len(res) == 1:
                 print("Not connected")
             else:
