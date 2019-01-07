@@ -4,7 +4,7 @@
 # 这里是搜索 最短路径
 # 当前位置， 所有可能的合法的移动； 然后在进一步 搜索， 直到 达到目标点
 #
-#
+# 使用广度优先 搜索， 发现最短路径
 #
 #
 
@@ -64,6 +64,27 @@ def is_validate(x, y):
     return 0 < x <= 8 and 0 < y <= 8
 
 
+def find_path(start, stop, layer=0, node_set=set()):
+    if stop in node_set:
+        my_print("已经在 结果集中，直接返回, layer={0}".format(layer))
+        return layer
+    else:
+        all_next_steps = move_able(start)
+        all_next_steps_set = set(all_next_steps)
+        # 已经处理过的就不用再处理了
+        may_next_steps = all_next_steps_set.difference(node_set)
+        my_print("may_next_steps={0}".format(may_next_steps))
+        if stop in may_next_steps:
+            my_print("找到 目标节点")
+            return layer
+        else:
+            for s in may_next_steps:
+                node_set.add(s)
+                find_path(s, stop, layer + 1, node_set)
+
+    return "NOT FOUND"
+
+
 def my_run(start, stop):
     (x0, y0), (x1, y1) = start, stop
     dx = x1 - x0
@@ -73,8 +94,9 @@ def my_run(start, stop):
     may_be = s // 5
     my_print(may_be)
     # 可以作为 一个估计  粗略的近似
-
-    return may_be
+    layer = find_path(start, stop, 0, set([start]))
+    my_print(layer)
+    return layer
     pass
 
 
@@ -87,6 +109,7 @@ def my_unit_test():
 
 
 def my_func_test():
+    assert my_run((2, 1), (2, 1)) == 1
     assert my_run((2, 1), (3, 3)) == 1
     assert my_run((4, 2), (7, 5)) == 2
     pass
