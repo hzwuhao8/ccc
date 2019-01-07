@@ -29,6 +29,9 @@ def my_input():
 # 联系出现2次以上
 # 可以用字符串的  字串处理
 # 也可以用 列表处理吗？
+
+# 用字符串 搜索  可能更简单
+
 def is_cycle(data, cycle):
     my_print("data={0}  cycle={1}".format(data, cycle))
     min_count = max(len(data) // len(cycle), 2)
