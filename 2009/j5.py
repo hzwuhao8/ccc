@@ -117,6 +117,10 @@ def my_s_width(graph, x, y):
         my_print("path_list={0}".format(path_list))
         if y in node_set:
             break
+        if not new_set_2:
+            my_print("没有找到新的节点！")
+            break
+
     if y in node_set:
         return path_list
     else:
