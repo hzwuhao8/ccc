@@ -120,7 +120,8 @@ def find_path_with(start, stop, layer=0, node_set=set(), next_set=set()):
                             node_set.add(s)
                         my_print("next_start={0}, layer={1} node_set={2}".format(s, layer + 1, node_set))
             next_set = new_next_set
-
+            if not new_next_set:
+                return "NOT FOUND"
     return "NOT FOUND"
 
 
