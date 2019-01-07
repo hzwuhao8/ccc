@@ -86,6 +86,40 @@ def my_f(graph, x):
     return res
 
 
+# 广度优先
+def my_s_width(graph, x, y):
+    my_print("line 91 x={0},y={1}".format(x, y))
+    my_print("graph=\n{0}".format(graph))
+    # 题目已知条件
+    max_layer = 5
+    path_list = [set([x])]
+    node_set = set([x])
+    if x == y:
+        return [x]
+    new_set = set([x])
+    node_set = node_set.union(new_set)
+    for i in range(max_layer):
+        new_set_2 = set()
+        for node in new_set:
+            my_print("node={0}".format(node))
+            friends = graph.get(node, set())
+            my_print("friends={0}".format(friends))
+
+            new_set_2 = new_set_2.union(friends)
+            if y in friends:
+                break
+            my_print("new_set_2={0}".format(new_set_2))
+        new_set_2 = new_set_2.difference(node_set)
+        path_list.append(new_set_2)
+        node_set = node_set.union(new_set_2)
+        new_set = new_set_2
+        my_print("node_set={0}".format(node_set))
+        my_print("path_list={0}".format(path_list))
+        if y in node_set:
+            break
+    return path_list
+
+
 # 一层 一层扩展
 #
 def my_s(graph, x, y):
@@ -183,8 +217,8 @@ def my_unit_test():
     my_i(g1, 20, 9)
     assert my_n(g1, 20) == 2
     assert my_f(g1, 20) == set([8, 11, 12])
-    assert my_s(g1, 20, 20) == [20]
-    assert my_s(g1, 20, 6) == [20, 9, 8, 7, 6]
+    assert len(my_s_width(g1, 20, 20)) == len([20])
+    assert len(my_s_width(g1, 20, 6)) == len([20, 9, 8, 7, 6])
     pass
 
 
