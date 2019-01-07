@@ -64,23 +64,62 @@ def is_validate(x, y):
     return 0 < x <= 8 and 0 < y <= 8
 
 
+# 实现的 代码是 深度优先
 def find_path(start, stop, layer=0, node_set=set()):
     if stop in node_set:
         my_print("已经在 结果集中，直接返回, layer={0}".format(layer))
         return layer
     else:
-        all_next_steps = move_able(start)
+        x, y = start
+        all_next_steps = move_able(x, y)
         all_next_steps_set = set(all_next_steps)
         # 已经处理过的就不用再处理了
         may_next_steps = all_next_steps_set.difference(node_set)
         my_print("may_next_steps={0}".format(may_next_steps))
+
         if stop in may_next_steps:
             my_print("找到 目标节点")
-            return layer
+            node_set.add(stop)
+            return layer + 1
         else:
             for s in may_next_steps:
                 node_set.add(s)
+                my_print("next_start={0}, layer={1} node_set={2}".format(s, layer + 1, node_set))
                 find_path(s, stop, layer + 1, node_set)
+                if stop in node_set:
+                    my_print("在 下一步的下一步 中 找到 目标节点")
+                    return layer + 2
+
+    return "NOT FOUND"
+
+
+def find_path_with(start, stop, layer=0, node_set=set(), next_set=set()):
+    if stop in node_set:
+        my_print("已经在 结果集中，直接返回, layer={0}".format(layer))
+        return layer
+    else:
+        while True:
+            new_next_set = set()
+            layer = layer + 1
+            for start in next_set:
+                x, y = start
+                all_next_steps = move_able(x, y)
+                all_next_steps_set = set(all_next_steps)
+                # 已经处理过的就不用再处理了
+                may_next_steps = all_next_steps_set.difference(node_set)
+                my_print("may_next_steps={0}".format(may_next_steps))
+                new_next_set = new_next_set.union(may_next_steps)
+                if stop in may_next_steps:
+                    my_print("找到 目标节点")
+                    node_set.add(stop)
+                    return layer
+                else:
+                    for s in may_next_steps:
+                        if s not in node_set:
+                            new_next_set.add(s)
+                            node_set.add(s)
+                        my_print("next_start={0}, layer={1} node_set={2}".format(s, layer + 1, node_set))
+            next_set = new_next_set
 
     return "NOT FOUND"
 
@@ -94,7 +133,7 @@ def my_run(start, stop):
     may_be = s // 5
     my_print(may_be)
     # 可以作为 一个估计  粗略的近似
-    layer = find_path(start, stop, 0, set([start]))
+    layer = find_path_with(start, stop, 0, set([start]),set([start]))
     my_print(layer)
     return layer
     pass
@@ -123,8 +162,11 @@ def my_main_test():
 
 
 def my_main():
-    input_data = my_input()
-    my_res = my_run(input_data)
+    s1 = input()
+    s2 = input()
+    start = tuple([int(x) for x in s1.split()])
+    stop = tuple([int(x) for x in s2.split()])
+    my_res = my_run(start, stop)
     print(my_res)
 
 
