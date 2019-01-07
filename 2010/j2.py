@@ -47,8 +47,6 @@ def my_distance(a, b, s):
                 distance1 = distance1 - delta
             else:
                 distance1 = distance1 + delta
-        else:
-            pass
 
         my_print("i={2} total1={0},distance1={1}".format(total1, distance1, i))
     my_print("total1={0},distance1={1}".format(total1, distance1))
