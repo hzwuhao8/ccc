@@ -109,7 +109,7 @@ def my_unit_test():
 
 
 def my_func_test():
-    assert my_run((2, 1), (2, 1)) == 1
+    assert my_run((2, 1), (2, 1)) == 0
     assert my_run((2, 1), (3, 3)) == 1
     assert my_run((4, 2), (7, 5)) == 2
     pass
