@@ -20,18 +20,60 @@ def my_print_trace(x, end="\n"):
 
 
 def my_input():
-    pass
+    data = []
+    for i in range(5):
+        data.append(int(input()))
+    return data
+
+
+def my_distance(a, b, s):
+    total1 = 0
+    distance1 = 0
+    max1 = s // (a + b) + 2
+    for i in range(max1):
+        if i % 2 == 0:
+            total1 = total1 + a
+            distance1 = distance1 + a
+        else:
+            total1 = total1 + b
+            distance1 = distance1 - b
+
+        if total1 == s:
+            break
+        elif total1 > s:
+            delta = total1 - s
+            total1 -= delta
+            if i % 2 == 0:
+                distance1 = distance1 - delta
+            else:
+                distance1 = distance1 + delta
+        else:
+            pass
+
+        my_print("i={2} total1={0},distance1={1}".format(total1, distance1, i))
+    my_print("total1={0},distance1={1}".format(total1, distance1))
+    return distance1
 
 
 def my_run(data):
-    pass
+    a, b, c, d, s = data
+    d1 = my_distance(a, b, s)
+    d2 = my_distance(c, d, s)
+    if d1 > d2:
+        return "Nikky"
+    elif d1 == d2:
+        return "Tied"
+    else:
+        return "Byron"
 
 
 def my_unit_test():
-    pass
+    assert my_distance(4, 2, 12) == 4
+    assert my_distance(5, 3, 12) == 6
 
 
 def my_func_test():
+    assert my_run((4, 2, 4, 3, 12)) == "Byron"
     pass
 
 
