@@ -12,13 +12,15 @@ def my_run(n, init_list):
     pass
 
 
-def my_print_data(data):
+def data_to_str(data):
     data2 = copy.deepcopy(data)
-    my_print("")
+    res_str = []
     for x in data2:
         x.reverse()
-        my_print("".join(["{0:^5}".format(i) for i in x]), end=" ")
-    my_print("")
+        tmp_str = "".join(["{0}".format(i) for i in x])
+        res_str.append("{0:^10}".format(tmp_str))
+    my_str = ",".join(res_str)
+    return my_str
 
 
 # 移动 f 位置的 coin 到 t 位置
@@ -37,6 +39,18 @@ def is_validate_move(data, f, t):
                 return False
 
 
+# 执行实际的移动
+# 状态用 字符串表示 比较简单
+def do_move(data, f, t, node_set=set()):
+    if is_validate_move(data, f, t):
+        coin = data[f].pop()
+        data[t].append(coin)
+        pass
+
+    else:
+        pass
+
+
 def is_goal(data):
     tmp_data = sum(data, [])
     tmp2 = sorted(tmp_data)
@@ -44,7 +58,7 @@ def is_goal(data):
 
 
 def my_unit_test():
-    my_print_data([[1], [2], [3]])
+    my_print(data_to_str([[1], [2], [3]]))
     assert is_goal([[1], [2], [3]])
     assert is_goal([[1], [2], [3], [4]])
     assert not is_goal([[1], [5], [2], [3], [4]])
@@ -63,6 +77,18 @@ def my_unit_test():
     assert is_validate_move(data, 0, 1)
     data = [[3, 1], [], [2]]
     assert not is_validate_move(data, 0, 2)
+
+    data = [[3], [2], [1]]
+    my_print(data_to_str(data))
+    do_move(data, 2, 1)
+    my_print(data_to_str(data))
+    assert data == [[3], [2, 1], []]
+    do_move(data, 1, 0)
+    my_print(data_to_str(data))
+    assert data == [[3, 1], [2], []]
+    do_move(data, 1, 2)
+    my_print(data_to_str(data))
+    assert data == [[3, 1], [], [2]]
 
 
 def my_func_test():
