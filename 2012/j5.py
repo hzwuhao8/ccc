@@ -8,8 +8,30 @@ def my_print(x, end="\n"):
     pass
 
 
-def my_run(n, init_list):
+def my_run(n, init_data):
+    if is_goal(init_data):
+        return 0
+    else:
+        layer = 0
+        node_set = set()
+        my_run_inner(n, init_data, layer, node_set)
+
     pass
+
+
+def my_run_inner(n, init_data, layer, node_set):
+    pass
+
+
+# 得到 所有可能的移动
+def get_next_move(n, data):
+    res = []
+    for f in range(n):
+        if is_validate_move(data, f + 1):
+            res.append((f, f + 1))
+        elif is_validate_move(data, f - 1):
+            res.append(f, f - 1)
+    return res
 
 
 def data_to_str(data):
@@ -92,8 +114,8 @@ def my_unit_test():
 
 
 def my_func_test():
-    assert my_run(3, [3, 2, 1]) == 20
-    assert my_run(2, [2, 1]) == -1
+    assert my_run(3, [[3], [2], [1]]) == 20
+    assert my_run(2, [[2], [1]]) == -1
 
 
 my_unit_test()
