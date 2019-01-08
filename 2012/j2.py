@@ -16,3 +16,12 @@ def my_run(data):
 
 
 my_func_test()
+
+
+def my_main():
+    data = [int(input()) for i in range(4)]
+    res = my_run(data)
+    print("{0}".format(res))
+
+
+my_main()
