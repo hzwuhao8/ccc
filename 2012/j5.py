@@ -24,7 +24,7 @@ def my_run(n, init_data):
 # 广度优先？如何 体现
 def my_run_inner(n, layer, node_set, next_data):
     my_print("next_data={0}".format(next_data))
-    for i in range(30000):
+    while True:
         my_print("layer={0} node_set={1}\n\n".format(layer, node_set))
         layer = layer + 1
         new_next_data = []
