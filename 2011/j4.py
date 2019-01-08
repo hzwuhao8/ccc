@@ -30,7 +30,7 @@ def my_run_inner(position_list, cmd, steps):
 
 def my_run(position_list, cmd_str):
     cmd, length_str = cmd_str.split()
-    my_print("cmd_str={0} cmd={1} length_str={2}".format(cmd_str, cmd, length_str))
+    my_print("cmd_str={0} cmd={1} length_str={2}, position_list={3}".format(cmd_str, cmd, length_str,position_list))
     res_list = my_run_inner(position_list, cmd, int(length_str))
     return " ".join([str(x) for x in res_list])
 
