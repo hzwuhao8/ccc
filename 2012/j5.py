@@ -35,7 +35,7 @@ def my_run_inner(n, layer, node_set, next_data):
         else:
             for data in next_data:
                 # my_print("  " * layer + "data={0}".format(data_to_str(data)))
-                next_steps = get_next_move(n, data)
+                next_steps = get_next_move(data)
                 my_print("  " * layer + "next_steps={0}".format(next_steps))
                 if not next_steps:
                     my_print("  " * layer + "已经无路可走了")
@@ -46,7 +46,7 @@ def my_run_inner(n, layer, node_set, next_data):
                         # my_print("  " * layer + "data={0}".format(data))
                         if try_move(data, f, t, node_set):
                             data_orig = copy.deepcopy(data)
-                            do_move(data_orig, f, t, node_set)
+                            do_move(data_orig, f, t)
                             # my_print("  " * layer + "move f={0},t={1}, data={2}".format(f, t, data_to_str(data_orig)))
                             if is_goal(data_orig):
                                 return layer
@@ -58,16 +58,16 @@ def my_run_inner(n, layer, node_set, next_data):
                         else:
                             pass
                             # my_print("  " * layer + "已经存在的状态 f={0},t={1}".format(f, t))
-            # my_run_inner(n, layer + 1, node_set, next_data)
         next_data = new_next_data
         # my_print("  " * layer + "new_next_data=\n{0}".format("\n".join([data_to_str(x) for x in new_next_data])))
         pass
 
 
 # 得到 所有可能的移动
-def get_next_move(n, data):
+def get_next_move(data):
     my_print("data={0}".format(data))
     res = []
+    n = len(data)
     for f in range(n):
         if is_validate_move(data, f, f + 1):
             res.append([f, f + 1])
@@ -128,7 +128,7 @@ def try_move(data_orig, f, t, node_set):
 # 状态用 字符串表示 比较简单
 # 如何 避免 直接 退回到上一步？
 
-def do_move(data, f, t, node_set):
+def do_move(data, f, t):
     if is_validate_move(data, f, t):
         coin = data[f].pop()
         data[t].append(coin)
@@ -168,29 +168,29 @@ def my_unit_test():
     data = [[3], [2], [1]]
     node_set = set()
     my_print(data_to_str(data))
-    do_move(data, 2, 1, node_set)
+    do_move(data, 2, 1)
     my_print(data_to_str(data))
     assert data == [[3], [2, 1], []]
-    do_move(data, 1, 0, node_set)
+    do_move(data, 1, 0)
     my_print(data_to_str(data))
     assert data == [[3, 1], [2], []]
-    do_move(data, 1, 2, node_set)
+    do_move(data, 1, 2)
     my_print(data_to_str(data))
     assert data == [[3, 1], [], [2]]
 
     # 所有可能的移动
     data = [[3], [2], [1]]
-    res = get_next_move(3, data)
+    res = get_next_move(data)
     my_print("get_next_move={0}".format(res))
     assert res == [[1, 0], [2, 1]]
 
     data = [[], [2, 1], [3]]
-    res = get_next_move(3, data)
+    res = get_next_move(data)
     my_print("get_next_move={0}".format(res))
     assert res == [[1, 2], [1, 0]]
 
     data = [[3, 2, 1], [], []]
-    res = get_next_move(3, data)
+    res = get_next_move(data)
     my_print("get_next_move={0}".format(res))
     assert res == [[0, 1]]
 
@@ -208,7 +208,9 @@ def my_func_test():
 
 
 my_unit_test()
-#my_func_test()
+
+
+# my_func_test()
 
 
 def my_main():
@@ -225,7 +227,7 @@ def my_main():
             my_print(data)
 
             res = my_run(xx, data)
-            #print(res)
+            # print(res)
             if res == -1:
                 print("IMPOSSIBLE")
             else:
