@@ -22,16 +22,13 @@ class Tree:
     def add_subtree(self, sub):
         self.sub_tree.append(sub)
         # 如何 对 所有的 节点的 layer 进行调整
-        sub.update_layer(self.layer + 1)
+        # sub.update_layer(self.layer + 1)
 
     def update_layer(self, layer):
+        my_print("update_layer tree={0}".format(self))
         self.layer = layer
-        if not self.sub_tree:
-            for t in self.sub_tree:
-                t.update_layer(layer + 1)
-            return
-        else:
-            return
+        for t in self.sub_tree:
+            t.update_layer(layer + 1)
 
     def add_node(self, v):
         t = Tree(v, sub_tree=[], layer=self.layer + 1)
@@ -121,6 +118,8 @@ def my_run(data):
         my_print(tree_dic[n])
         for sub in v:
             tree_dic[k].add_subtree(tree_dic[sub])
+
+    tree_dic[n].update_layer(1)
     my_print(tree_dic[n])
     my_print(tree_dic[n - 1])
     my_print(tree_dic[1])
@@ -131,6 +130,7 @@ def my_run(data):
     res = tree_dic[n].sub_tree_count()
     my_print(res)
     return res - 1
+
 
 def my_input():
     n = int(input())
@@ -144,7 +144,6 @@ def my_main():
     data = my_input()
     res = my_run(data)
     print(res)
-
 
 
 my_unit_test()
