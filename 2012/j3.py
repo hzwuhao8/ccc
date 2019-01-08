@@ -23,7 +23,7 @@ my_func_test()
 
 def my_main():
     k = int(input())
-    res = my_run(base, k)
+    res = my_run(base_data, k)
     res_str = "\n".join(res)
     print(res_str)
 
