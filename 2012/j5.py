@@ -47,8 +47,22 @@ def my_unit_test():
     my_print_data([[1], [2], [3]])
     assert is_goal([[1], [2], [3]])
     assert is_goal([[1], [2], [3], [4]])
-    assert is_goal([[1], [5], [2], [3], [4]])
+    assert not is_goal([[1], [5], [2], [3], [4]])
 
+    data = [[3], [2], [1]]
+    assert is_validate_move(data, 2, 1)
+    assert not is_validate_move(data, 0, 1)
+    assert not is_validate_move(data, 0, -1)
+    assert not is_validate_move(data, 0, 2)
+    assert not is_validate_move(data, 1, 2)
+
+    data = [[2, 1], [3], []]
+    assert is_validate_move(data, 1, 2)
+
+    data = [[3, 1], [], [2]]
+    assert is_validate_move(data, 0, 1)
+    data = [[3, 1], [], [2]]
+    assert not is_validate_move(data, 0, 2)
 
 
 def my_func_test():
