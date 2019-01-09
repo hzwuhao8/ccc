@@ -1,17 +1,25 @@
 def my_func_test():
     assert my_run(6, [3, 6, 3]) == 2
     assert my_run(6, [5, 4, 3, 2, 1]) == 3
+    assert my_run(2, [5, 4, 3]) == 0
 
 
 # 从小 加到大
 def my_run(limit, task_list):
     task_list.sort()
     total = 0
+    if limit < task_list[0]:
+        return 0
+    if limit == task_list[0]:
+        return 1
+
     for i in range(len(task_list)):
         # print("i={0} total={1}".format(i,total))
         total += task_list[i]
-        if total >= limit:
-            return i + 1
+        if total == limit:
+                return i + 1
+        elif total > limit:
+            return i
         else:
             pass
 
