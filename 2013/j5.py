@@ -10,19 +10,6 @@ def my_print(x, end="\n"):
 TEST_DATA_1 = [[1, 3, 7, 5], [3, 4, 0, 8], [2, 4, 2, 2]]
 TEST_DATA_2 = [[1, 3, 5, 7], [3, 4, 8, 0], [2, 4, 2, 2], [1, 2, 5, 5]]
 
-
-def my_func_test():
-    data = copy.deepcopy(TEST_DATA_1)
-    assert my_run(3, data) == 0
-
-    data = copy.deepcopy(TEST_DATA_2)
-    assert my_run(3, data) == 9
-
-
-def my_run(team, data):
-    pass
-
-
 base_score_list = [(3, 0), (1, 1), (0, 3)]
 
 
@@ -70,6 +57,11 @@ def future_game(data):
     return future_set
 
 
+def is_win(dic, team):
+    s_list = sorted(dic.items(), key=lambda kv: kv[1], reverse=True)
+    return s_list[0][0] == team
+
+
 def my_unit_test():
     data = copy.deepcopy(TEST_DATA_1)
     dic = over_game_score(data)
@@ -95,6 +87,21 @@ def my_unit_test():
     my_print("over_set={0}".format(over_set))
     assert len(over_set) == 4
     assert over_set == set([(1, 3), (3, 4), (2, 4), (1, 2)])
+
+    assert is_win(dic, 3)
+    assert not is_win(dic, 4)
+
+
+def my_func_test():
+    data = copy.deepcopy(TEST_DATA_1)
+    assert my_run(3, data) == 0
+
+    data = copy.deepcopy(TEST_DATA_2)
+    assert my_run(3, data) == 9
+
+
+def my_run(team, data):
+    pass
 
 
 my_unit_test()
