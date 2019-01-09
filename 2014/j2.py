@@ -3,7 +3,7 @@ def my_func_test():
     assert my_run(6, 'ABBABA') == 'Tie'
 
 
-def my_run(all, data):
+def my_run(my_all, data):
     ta = data.count('A')
     tb = data.count('B')
     if ta > tb:
@@ -15,13 +15,12 @@ def my_run(all, data):
 
 
 def my_main():
-    all = int(input())
+    my_all = int(input())
     data = input()
-    res = my_run(data)
+    res = my_run(my_all, data)
     print(res)
 
 
 my_func_test()
 
 my_main()
-
