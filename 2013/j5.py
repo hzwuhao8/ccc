@@ -1,4 +1,7 @@
 # 计分问题， 如何赢
+# 1:20 ;   后面主要是 化在， a 找到 所有的组合， 这是一个 递归关系，不是 简单的 乘 ，当然 也可以进行穷举，  4支队伍， 也就 4重循环
+# is_win  需要考虑 平局的情况
+
 import copy
 
 
@@ -56,7 +59,8 @@ def future_game(data):
     future_set = all_contest.difference(over_set)
     return future_set
 
-#存在 平局的可能
+
+# 存在 平局的可能
 def is_win(dic, team):
     s_list = sorted(dic.items(), key=lambda kv: kv[1], reverse=True)
     return s_list[0][0] == team and s_list[0][1] > s_list[1][1]
@@ -112,7 +116,7 @@ def my_run_inner(team, score_dic, f_set, res):
         (a, b) = tmp_list[0]
         new_f_set = set(tmp_list[1:])
         for sa, sb in base_score_list:
-            new_score_dic = copy.deepcopy(score_dic) # 没有一种可能 生成 新的 dict
+            new_score_dic = copy.deepcopy(score_dic)  # 没有一种可能 生成 新的 dict
             av, bv = get_score(sa, sb)
             new_score_dic[a] = new_score_dic[a] + av
             new_score_dic[b] = new_score_dic[b] + bv
