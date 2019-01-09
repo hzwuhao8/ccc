@@ -3,7 +3,7 @@ import copy
 
 
 def my_print(x, end="\n"):
-    #print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -56,10 +56,10 @@ def future_game(data):
     future_set = all_contest.difference(over_set)
     return future_set
 
-
+#存在 平局的可能
 def is_win(dic, team):
     s_list = sorted(dic.items(), key=lambda kv: kv[1], reverse=True)
-    return s_list[0][0] == team
+    return s_list[0][0] == team and s_list[0][1] > s_list[1][1]
 
 
 def my_unit_test():
@@ -111,8 +111,8 @@ def my_run_inner(team, score_dic, f_set, res):
         tmp_list = list(f_set)
         (a, b) = tmp_list[0]
         new_f_set = set(tmp_list[1:])
-        new_score_dic = copy.deepcopy(score_dic)
         for sa, sb in base_score_list:
+            new_score_dic = copy.deepcopy(score_dic) # 没有一种可能 生成 新的 dict
             av, bv = get_score(sa, sb)
             new_score_dic[a] = new_score_dic[a] + av
             new_score_dic[b] = new_score_dic[b] + bv
@@ -124,8 +124,12 @@ def my_run(team, data):
     score_dic = over_game_score(data)
     total = 0
     res = []
+    my_print("data={0}".format(data))
+    my_print("score_dic={0}".format(score_dic))
+    my_print("f_set={0}".format(f_set))
     my_run_inner(team, score_dic, f_set, res)
     my_print(len(res))
+    my_print(res)
     for x in res:
         if is_win(x, team):
             total += 1
