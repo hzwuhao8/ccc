@@ -15,4 +15,17 @@ def my_run(data):
     return [a, d]
 
 
+def my_main():
+    total = int(input())
+    data = []
+    for i in range(total):
+        data.append([int(x) for x in input().split()])
+    res = my_run(data)
+    res_str = "\n".join([str(x) for x in res])
+    print(res_str)
+
+
 my_func_test()
+
+my_main()
+
