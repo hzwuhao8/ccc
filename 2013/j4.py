@@ -8,16 +8,12 @@ def my_func_test():
 def my_run(limit, task_list):
     task_list.sort()
     total = 0
-    if limit < task_list[0]:
-        return 0
-    if limit == task_list[0]:
-        return 1
 
     for i in range(len(task_list)):
         # print("i={0} total={1}".format(i,total))
         total += task_list[i]
         if total == limit:
-                return i + 1
+            return i + 1
         elif total > limit:
             return i
         else:
