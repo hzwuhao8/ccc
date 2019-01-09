@@ -1,5 +1,5 @@
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -23,4 +23,17 @@ def my_run(k, data):
     return my_list
 
 
+def my_main():
+    k = int(input())
+    total = int(input())
+    data = []
+    for i in range(total):
+        data.append(int(input()))
+    res = my_run(k, data)
+    res_str = "\n".join([str(x) for x in res])
+    print(res_str)
+
+
 my_func_test()
+
+my_main()
