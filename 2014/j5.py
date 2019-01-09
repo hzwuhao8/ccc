@@ -1,3 +1,6 @@
+# 2014 估计是最简单的竞赛了
+
+
 def my_print(x):
     # print(x)
     pass
