@@ -1,5 +1,5 @@
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -16,7 +16,7 @@ def my_run(total, str_a, str_b):
         zip_list = list(zip(list_a, list_b))
         my_print(zip_list)
         for a, b in zip_list:
-            if (b, a) not in zip_list:
+            if a == b or (b, a) not in zip_list:
                 return "bad"
         return "good"
     else:
@@ -25,4 +25,14 @@ def my_run(total, str_a, str_b):
     pass
 
 
+def my_main():
+    n = int(input())
+    str_a = input()
+    str_b = input()
+    res = my_run(n, str_a, str_b)
+    print(res)
+
+
 my_func_test()
+
+my_main()
