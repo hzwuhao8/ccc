@@ -3,7 +3,7 @@ import copy
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    #print(x, end=end)
     pass
 
 
@@ -100,9 +100,52 @@ def my_func_test():
     assert my_run(3, data) == 9
 
 
+# 全排列
+#
+
+def my_run_inner(team, score_dic, f_set, res):
+    if len(f_set) == 0:
+        res.append(score_dic)
+        return res
+    else:
+        tmp_list = list(f_set)
+        (a, b) = tmp_list[0]
+        new_f_set = set(tmp_list[1:])
+        new_score_dic = copy.deepcopy(score_dic)
+        for sa, sb in base_score_list:
+            av, bv = get_score(sa, sb)
+            new_score_dic[a] = new_score_dic[a] + av
+            new_score_dic[b] = new_score_dic[b] + bv
+            my_run_inner(team, new_score_dic, new_f_set, res)
+
+
 def my_run(team, data):
+    f_set = future_game(data)
+    score_dic = over_game_score(data)
+    total = 0
+    res = []
+    my_run_inner(team, score_dic, f_set, res)
+    my_print(len(res))
+    for x in res:
+        if is_win(x, team):
+            total += 1
+    return total
+
     pass
 
 
 my_unit_test()
 my_func_test()
+
+
+def my_main():
+    team = int(input())
+    total = int(input())
+    data = []
+    for i in range(total):
+        data.append([int(x) for x in input().split()])
+    res = my_run(team, data)
+    print(res)
+
+
+my_main()
