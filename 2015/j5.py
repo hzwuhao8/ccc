@@ -4,8 +4,8 @@ def my_print(x):
 
 
 def my_func_test():
-    assert my_run(8, 8) == 1
     assert my_run(1, 8) == 1
+    assert my_run(8, 8) == 1
     assert my_run(8, 9) == 2
     assert my_run(8, 10) == 2
     assert my_run(8, 11) == 3
@@ -16,6 +16,8 @@ def my_func_test():
 
 def my_run(k, n):
     if k == 1:
+        return 1
+    if k < n:
         return 1
     if k == n:
         return 1
