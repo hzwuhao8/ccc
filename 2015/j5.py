@@ -90,3 +90,13 @@ def my_unit_test():
 
 my_unit_test()
 my_func_test()
+
+
+def my_main():
+    n = int(input())
+    k = int(input())
+    res = my_run(n, k)
+    print(res)
+
+
+my_main()
