@@ -33,11 +33,27 @@ def my_run(data):
         t3 += c3
         t4 += c4
 
-    my_set2 = my_set .union(  set([t1, t2, t3, t4]) )
-    #print(my_set2)
+    my_set2 = my_set.union(set([t1, t2, t3, t4]))
+    # print(my_set2)
     if len(my_set2) == 1:
         return "magic"
     else:
         return "not magic"
 
+
 my_func_test()
+
+
+def my_main():
+    data_str_List = []
+    for i in range(4):
+        data_str_List.append(input())
+    my_str = "\n".join(data_str_List)
+    #print(my_str)
+    res = my_run(my_str)
+    print(res)
+
+my_main()
+
+
+
