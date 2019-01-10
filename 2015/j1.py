@@ -3,8 +3,6 @@ def my_func_test():
     assert my_run(8, 31) == "After"
     assert my_run(2, 18) == "Special"
 
-my_func_test()
-
 
 def my_run(m, d):
     if m <= 1:
@@ -17,6 +15,13 @@ def my_run(m, d):
         return "After"
 
 
+def my_main():
+    m = int(input())
+    d = int(input())
+    res = my_run(m, d)
+    print(res)
 
 
+my_func_test()
 
+my_main()
