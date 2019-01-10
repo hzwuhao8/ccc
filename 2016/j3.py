@@ -1,5 +1,5 @@
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -38,3 +38,12 @@ def my_unit_test():
 
 my_unit_test()
 my_func_test()
+
+
+def my_main():
+    my_str = input()
+    res = my_run(my_str)
+    print(res)
+
+
+my_main()
