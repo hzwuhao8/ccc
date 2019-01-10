@@ -34,7 +34,7 @@ def my_run(n, k):
 
 
 def my_run_inner(n, k, layer, zero_ok):
-    if layer > 5:
+    if layer > 5000:
         print("ERROR")
         return 0;
     my_print("  " * layer + "n={0},k={1},layer={2},zero_ok={3}".format(n, k, layer, zero_ok))
