@@ -4,7 +4,7 @@
 ###
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -75,4 +75,17 @@ def my_run(cmd_list):
     pass
 
 
+def my_main():
+    total = int(input())
+    cmd_str = []
+    for i in range(total):
+        cmd_str.append(input())
+    my_print(cmd_str)
+    res = my_run(cmd_str)
+    for x in res:
+        print(x)
+
+
 my_func_test()
+
+my_main()
