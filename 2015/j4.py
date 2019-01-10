@@ -83,7 +83,7 @@ def my_main():
     my_print(cmd_str)
     res = my_run(cmd_str)
     for x in res:
-        print(x)
+        print("{0} {1}".format(x[0],x[1]))
 
 
 my_func_test()
