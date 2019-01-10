@@ -1,6 +1,7 @@
 ##
 # 没有想象的简单
-
+# 没有仔细 阅读 条件！
+#  R W  | S W ; 这种情况下， W 需要 -1
 ###
 
 def my_print(x):
@@ -25,6 +26,9 @@ def my_run(cmd_list):
         x = int(x0)
         if c == "W":
             current_time += x
+            if i > 0 and cmd_list[i - 1] != 'W':
+                # 前面的多记了 一秒
+                current_time -= 1
         elif c == "R":
             my_round = dic.get(x, 0)
             dic[x] = my_round + 1
@@ -35,11 +39,7 @@ def my_run(cmd_list):
                 my_print("t1={0}".format(t1))
                 t1[0].append(current_time)
 
-            if i < len(cmd_list) - 1:
-                if cmd_list[i + 1].startswith("W"):
-                    pass
-                else:
-                    current_time += 1
+            current_time += 1
 
         elif c == "S":
             my_round = dic.get(x, 0)
@@ -51,11 +51,8 @@ def my_run(cmd_list):
                 s1 = t1[0].pop()
                 total = t1[1] + (current_time - s1)
                 dic_time[x] = (t1[0], total)
-            if i < len(cmd_list) - 1:
-                if cmd_list[i + 1].startswith("W"):
-                    pass
-                else:
-                    current_time += 1
+
+            current_time += 1
         else:
             print("ERROR")
 
@@ -83,7 +80,7 @@ def my_main():
     my_print(cmd_str)
     res = my_run(cmd_str)
     for x in res:
-        print("{0} {1}".format(x[0],x[1]))
+        print("{0} {1}".format(x[0], x[1]))
 
 
 my_func_test()
