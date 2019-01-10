@@ -1,3 +1,6 @@
+#用穷举的 方法 进行了处理
+#可以 考虑 增加步长
+
 def my_print(x):
     # print(x)
     pass
@@ -15,28 +18,26 @@ def my_run(my_time):
     h, m = [int(x) for x in my_time.split(":")]
     my_print("h={0},m={1}".format(h, m))
     res = ""
-    if False and not is_rush(h, m) and not is_rush_end((h + 2) % 24, m):
-        res = "{0:02}:{1:02}".format((h + 2) % 24, m)
-    else:
-        # 需要延迟的时间 20min 为间隔
-        # 最多 240 分钟 设 距离为 240 ;   v=2 ; v =1
-        s = 240
-        for i in range(1, 240):
-            h1, m1 = add_min(h, m, i)
-            if is_rush(h1, m1):
-                v = 1
-            else:
-                v = 2
-            s = s - v
-            my_print("s={0},v={1}, i={2}, hm1={3:02}:{4:02}".format(s, v, i, h1, m1))
-            if s == 0:
-                h2, m2 = add_min(h, m, i)
-                res = "{0:02}:{1:02}".format(h2, m2)
-                break
-            if s <= 0:
-                h2, m2 = add_min(h, m, i)
-                res = "{0:02}:{1:02}".format(h2, m2)
-                break
+
+
+    # 最多 240 分钟 设 距离为 240 ;   v=2 ; v =1
+    s = 240
+    for i in range(1, 240):
+        h1, m1 = add_min(h, m, i)
+        if is_rush(h1, m1):
+            v = 1
+        else:
+            v = 2
+        s = s - v
+        my_print("s={0},v={1}, i={2}, hm1={3:02}:{4:02}".format(s, v, i, h1, m1))
+        if s == 0:
+            h2, m2 = add_min(h, m, i)
+            res = "{0:02}:{1:02}".format(h2, m2)
+            break
+        if s <= 0:
+            h2, m2 = add_min(h, m, i)
+            res = "{0:02}:{1:02}".format(h2, m2)
+            break
     my_print("res={0}".format(res))
     return res
 
