@@ -1,9 +1,10 @@
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
 def my_func_test():
+    assert my_run_min([1, 2, 1], [2, 1, 1]) == 4
     assert my_run_min([5, 1, 4], [6, 2, 4]) == 12
     assert my_run_max([5, 1, 4], [6, 2, 4]) == 15
     assert my_run_max([202, 177, 189, 589, 102], [17, 78, 1, 496, 540]) == 2016
@@ -65,5 +66,25 @@ def my_run_max(d1, d2):
     return sum
 
 
-
 my_func_test()
+
+
+def my_main():
+    typ = int(input())
+    n = int(input())
+    d1 = [int(x) for x in input().split()]
+    d2 = [int(x) for x in input().split()]
+
+    if typ == 1:
+        res = my_run_min(d1, d2)
+        print(res)
+    elif typ == 2:
+        res = my_run_max(d1, d2)
+        print(res)
+    else:
+        pass
+
+
+
+my_main()
+
