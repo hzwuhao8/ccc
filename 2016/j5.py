@@ -1,3 +1,8 @@
+# 例子数据 是都对了
+# 但是对于 所有情况， 都能取到， 感到有 疑惑
+
+
+
 def my_print(x, end="\n"):
     # print(x, end=end)
     pass
