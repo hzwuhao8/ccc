@@ -17,4 +17,12 @@ def my_run(my_str):
         return "sad"
 
 
+def my_main():
+    my_str = input()
+    res = my_run(my_str)
+    print(res)
+
+
 my_func_test()
+
+my_main()
