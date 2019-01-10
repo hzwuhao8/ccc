@@ -7,7 +7,7 @@ def my_unit_test():
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -54,6 +54,14 @@ def my_run(my_str):
     return res
 
 
+def my_main():
+    my_str = input()
+    res = my_run(my_str)
+    print(res)
+
+
 my_unit_test()
 
 my_func_test()
+
+my_main()
