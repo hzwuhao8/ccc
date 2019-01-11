@@ -2,7 +2,7 @@
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -145,5 +145,14 @@ def my_unit_test():
     assert remove_2([1, 2]) == [], remove_2([1, 2])
 
 
+def my_main():
+    n = int(input())
+    data = [int(x) for x in input().split()]
+    res = my_run(data)
+    print(" ".join([str(x) for x in res]))
+
+
 my_unit_test()
 my_func_test()
+
+my_main()
