@@ -7,7 +7,7 @@
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -24,6 +24,7 @@ def my_run(data):
         next_data = rotate_90(data)
         if is_validate(next_data):
             return next_data
+        data = next_data
 
     pass
 
