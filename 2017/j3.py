@@ -5,8 +5,9 @@
 #
 #
 
+
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -47,4 +48,15 @@ def my_run(p1, p2, steps, layer=0):
     pass
 
 
+def my_main():
+    p1 = [int(x) for x in input().split()]
+    p2 = [int(x) for x in input().split()]
+    steps = int(input())
+    res = my_run(p1, p2, steps)
+    print(res)
+
+
 my_func_test()
+
+my_main()
+
