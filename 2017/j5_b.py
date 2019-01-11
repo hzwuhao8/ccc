@@ -2,7 +2,8 @@
 import sys
 import time
 
-input = sys.stdin.readline
+
+#input = sys.stdin.readline
 
 
 def my_print(x):
@@ -28,17 +29,8 @@ def my_run(data):
     dic_count = {}
     # n = len(data)
     # dic_cache[(i, j)] = k
-    data_list = [0] * 2200
-
     for k in data:
-        data_list[k] += 1
-
-    # dic_count[k] = dic_count.get(k, 0) + 1
-    #list -> dic
-    for k in range(2005):
-        if data_list[k] >0:
-            dic_count[k] = data_list[k]
-
+        dic_count[k] = dic_count.get(k, 0) + 1
 
     # my_print("dic_count={0}".format(dic_count))
     # my_print("len(dic_count)={0}".format(len(dic_count)))
