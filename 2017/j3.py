@@ -39,6 +39,8 @@ def my_run(p1, p2, steps, layer=0):
 
     if layer > 100:
         return "N"
+    if abs(delta_x) + abs(delta_y) > steps:
+        return "N"
     if s == 1 and steps == 1:
         dic_cache[(delta_x, delta_y, steps)] = 'Y'
         return 'Y'
