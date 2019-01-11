@@ -16,7 +16,7 @@ for fin in  $(ls ${mydir}*.${ext})
 do
  fout="${fin/$ext/out}"
  #fout="${fout/data/out}"
- bash runa.sh  0 $fin $fout  $myp
+ time bash runa.sh  0 $fin $fout  $myp
  if [ $? != "0" ]; then
 	bash runa.sh  1 $fin $fout  $myp
 	#exit

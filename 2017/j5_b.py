@@ -1,11 +1,12 @@
 #
 import sys
+import time
 
-#input = sys.stdin.readline
+input = sys.stdin.readline
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -21,19 +22,52 @@ def my_func_test():
 
 
 def my_run(data):
+    # my_print("====" * 20)
     # 统计出现次数最多的2个数字
     #
     dic_count = {}
-    n = len(data)
+    # n = len(data)
     # dic_cache[(i, j)] = k
-    for k in data:
-        if k in dic_count:
-            dic_count[k] = dic_count[k] + 1
-        else:
-            dic_count[k] = 1
+    data_list = [0] * 2200
 
-    my_print(dic_count)
-    my_print(len(dic_count))
+    for k in data:
+        data_list[k] += 1
+
+    # dic_count[k] = dic_count.get(k, 0) + 1
+    #list -> dic
+    for k in range(2005):
+        if data_list[k] >0:
+            dic_count[k] = data_list[k]
+
+
+    # my_print("dic_count={0}".format(dic_count))
+    # my_print("len(dic_count)={0}".format(len(dic_count)))
+
+    dic_data2 = {}
+    item_list = list(dic_count.items())
+    index = 0
+    for i, v1 in item_list:
+        for j, v2 in item_list[index:]:
+            if i == j:
+                c = v1 // 2
+            else:
+                c = min(v1, v2)
+
+            dic_data2[i + j] = dic_data2.get(i + j, 0) + c
+        index = index + 1
+
+    # my_print("dic_data2={0}".format(dic_data2))
+    ans1 = 0
+    ans2 = 0
+    for k, v in dic_data2.items():
+        if v > ans1:
+            ans1 = v
+            ans2 = 1
+        elif v == ans1:
+            ans2 += 1
+
+    return [ans1, ans2]
+
     pass
 
 
@@ -42,9 +76,10 @@ def my_run(data):
 
 def my_main():
     n = int(input())
+
     data = [int(x) for x in input().split()]
     res = my_run(data)
-    # print(" ".join([str(x) for x in res]))
+    print(" ".join([str(x) for x in res]))
 
 
 my_main()
