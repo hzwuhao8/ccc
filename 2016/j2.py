@@ -49,11 +49,9 @@ def my_main():
     for i in range(4):
         data_str_List.append(input())
     my_str = "\n".join(data_str_List)
-    #print(my_str)
+    # print(my_str)
     res = my_run(my_str)
     print(res)
 
+
 my_main()
-
-
-
