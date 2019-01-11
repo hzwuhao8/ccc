@@ -33,7 +33,8 @@ def my_main():
     for i in range(n):
         data.append(int(input()))
     res = my_run(data)
-    print("{0:.2}".format(res))
+
+    print("{0}".format(res))
 
 
 my_main()
