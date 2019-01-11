@@ -68,6 +68,15 @@ def is_seq(my_str):
         return len(d4) == 1
 
 
+def my_main():
+    t = int(input())
+    res = my_run(t)
+    print(res)
+
+
 my_unit_test()
 
 my_func_test()
+
+my_main()
+
