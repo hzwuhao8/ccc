@@ -25,8 +25,6 @@ def my_run(data):
         if is_validate(next_data):
             return next_data
 
-
-
     pass
 
 
@@ -35,7 +33,7 @@ def rotate_90(data):
     n = len(data)
     next_data = [[0] * n] * n
     for i in range(0, n):
-        tmp_row=[0]*n
+        tmp_row = [0] * n
         for j in range(0, n):
             my_print("i={0} j={1} (n - 1) - j={2}".format(i, j, (n - 1) - j))
             tmp_row[j] = data[(n - 1) - j][i]
@@ -79,3 +77,19 @@ def my_unit_test():
 
 my_unit_test()
 my_func_test()
+
+
+def my_main():
+    n = int(input())
+    data = []
+    for i in range(n):
+        d1 = [int(x) for x in input().split()]
+        data.append(d1)
+    res = my_run(data)
+
+    for x in res:
+        print(" ".join([str(i) for i in x]))
+
+
+my_main()
+
