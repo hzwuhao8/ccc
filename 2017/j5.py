@@ -1,4 +1,6 @@
 def my_print(x):
+    print(x)
+    pass
 
 
 def my_func_test():

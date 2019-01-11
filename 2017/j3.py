@@ -7,7 +7,7 @@
 
 
 def my_print(x):
-    print(x)
+    # print(x)
     pass
 
 
@@ -21,24 +21,26 @@ def my_func_test():
     assert my_run((10, 2), (10, 4), 6) == 'Y'
     my_print(dic_cache)
     assert my_run((10, 2), (10, 4), 5) == 'N'
+    my_print(dic_cache)
 
 
 dic_cache = {}
 
 
-def my_run(p1, p2, steps, layer=0):
+def my_run_2(p1, p2, steps, layer=0):
     delta_x = (p2[0] - p1[0])
     delta_y = (p2[1] - p1[1])
 
     s = delta_x ** 2 + delta_y ** 2
     my_print("  " * layer + "layer={3} p1={0},p2={1},steps={2},s={4},".format(p1, p2, steps, layer, s))
-    my_print("  " * layer + "dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
-                                                                       dic_cache.get((delta_x, delta_y, steps), '')))
+    # my_print("  " * layer + "dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+    #                                                                   dic_cache.get((delta_x, delta_y, steps), '')))
     if (delta_x, delta_y, steps) in dic_cache:
         return dic_cache[(delta_x, delta_y, steps)]
+        pass
 
-    if layer > 100:
-        return "N"
+    # if layer > 100:
+    #    return "N"
     if abs(delta_x) + abs(delta_y) > steps:
         return "N"
     if s == 1 and steps == 1:
@@ -56,34 +58,77 @@ def my_run(p1, p2, steps, layer=0):
         x2, y2 = p2
         next_1 = my_run((x1 - 1, y1), (x2, y2), steps - 1, layer + 1)
         if next_1 == "Y":
-            delta_x = (x2 - (x1 - 1))
-            delta_y = (y2 - y1)
+            # delta_x = (x2 - (x1 - 1))
+            # delta_y = (y2 - y1)
             dic_cache[(delta_x, delta_y, steps)] = 'Y'
+            my_print("  " * layer + "x-1 dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+                                                                                   dic_cache.get(
+                                                                                       (delta_x, delta_y, steps),
+                                                                                       '')))
             return "Y"
         next_2 = my_run((x1 + 1, y1), (x2, y2), steps - 1, layer + 1)
         if next_2 == "Y":
-            delta_x = (x2 - (x1 + 1))
-            delta_y = (y2 - y1)
+            # delta_x = (x2 - (x1 + 1))
+            # delta_y = (y2 - y1)
             dic_cache[(delta_x, delta_y, steps)] = 'Y'
+            my_print("  " * layer + "x+1 dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+                                                                                   dic_cache.get(
+                                                                                       (delta_x, delta_y, steps),
+                                                                                       '')))
             return "Y"
         next_3 = my_run((x1, y1 + 1), (x2, y2), steps - 1, layer + 1)
         if next_3 == "Y":
-            delta_x = (x2 - x1)
-            delta_y = (y2 - (y1 + 1))
+            # delta_x = (x2 - x1)
+            # delta_y = (y2 - (y1 + 1))
             dic_cache[(delta_x, delta_y, steps)] = 'Y'
+            my_print("  " * layer + "y+1 dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+                                                                                   dic_cache.get(
+                                                                                       (delta_x, delta_y, steps),
+                                                                                       '')))
             return "Y"
         next_4 = my_run((x1, y1 - 1), (x2, y2), steps - 1, layer + 1)
         if next_4 == "Y":
-            delta_x = (x2 - x1)
-            delta_y = (y2 - (y1 - 1))
+            # delta_x = (x2 - x1)
+            # delta_y = (y2 - (y1 - 1))
             dic_cache[(delta_x, delta_y, steps)] = 'Y'
+            my_print("  " * layer + "y-1 dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+                                                                                   dic_cache.get(
+                                                                                       (delta_x, delta_y, steps),
+                                                                                       '')))
             return "Y"
         delta_x = (p2[0] - p1[0])
         delta_y = (p2[1] - p2[1])
+
         dic_cache[(delta_x, delta_y, steps)] = 'N'
+
+        my_print("  " * layer + "dx={0},dy={1},steps={2},cache={3}".format(delta_x, delta_y, steps,
+                                                                           dic_cache.get((delta_x, delta_y, steps),
+                                                                                         '')))
+
         return "N"
 
     pass
+
+
+def my_run(p1, p2, steps):
+    dx = abs(p2[0] - p1[0])
+    dy = abs(p2[1] - p1[1])
+    min_steps = dx + dy
+    if steps < min_steps :
+        return 'N'
+    if steps == min_steps:
+        return 'Y'
+    for i in range(1, steps // min_steps, 2):
+        if steps - min_steps * 3 > 0:
+            steps = steps - min_steps * 2
+        else:
+            break
+    my_print("p1={0},p2={1},steps={2},min_steps={3}".format(p1, p2, steps, min_steps))
+    steps = steps - min_steps
+    if steps % 2 == 0:
+        return 'Y'
+    else:
+        return 'N'
 
 
 def my_main():
