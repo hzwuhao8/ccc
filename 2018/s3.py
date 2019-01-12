@@ -30,6 +30,8 @@ W.W.W
 WWS.W
 WWWWW"""
 
+mask_c = '/'
+
 
 def my_func_test():
     assert my_run(data_str2) == [2, 1, 3, -1, -1, 1]
@@ -54,28 +56,32 @@ def my_run(data_str):
     my_mask(data)
 
     my_print_m(data)
+    # quit()
 
     # 进行 广度优先 搜索， 取到所有可以达到的 点
     next_node_list = []
     p = my_find_s(data)
-    next_node_list.append(p)
-    node_dic = {p: ''}
+    if not p:
+        node_dic = {}
+    else:
+        next_node_list.append(p)
+        node_dic = {p: ''}
 
-    my_search(data, 0, next_node_list, node_dic)
-    data2 = copy.deepcopy(data)
-    for i, j in node_dic:
-        if data2[i][j] == '.':
-            data2[i][j] = 'X'
+        my_search(data, 0, next_node_list, node_dic)
+        data2 = copy.deepcopy(data)
+        for i, j in node_dic:
+            if data2[i][j] == '.':
+                data2[i][j] = 'X'
 
-    my_print_m(data)
+        my_print_m(data)
 
-    my_print_m(data2)
+        my_print_m(data2)
 
     # 从 node_dic 中提取数据
     res = []
     for i in range(n):
         for j in range(m):
-            if data[i][j] == 'M':
+            if data[i][j] == mask_c:
                 res.append(-1)
             if data[i][j] == '.':
                 if (i, j) in node_dic:
@@ -107,51 +113,51 @@ def my_mask(data):
         for x in range(i - 1, -1, -1):
             my_c = data[x][j]
             # my_print("[{0}][{1}]={2}".format(x, j, my_c))
-            if my_c == 'W':
+            if my_c == 'W' or my_c == 'C':
                 break
             elif my_c in o_op_list:
                 continue
             elif my_c == 'S':
-                continue
+                data[x][j] = 's'
             else:
-                data[x][j] = 'M'
+                data[x][j] = mask_c
 
         # my_print_m(data)
 
         for x in range(i + 1, n):
             my_c = data[x][j]
             # my_print("[{0}][{1}]={2}".format(x, j, my_c))
-            if my_c == 'W':
+            if my_c == 'W' or my_c == 'C':
                 break
             elif my_c in o_op_list:
                 continue
             elif my_c == 'S':
-                continue
+                data[x][j] = 's'
             else:
-                data[x][j] = 'M'
+                data[x][j] = mask_c
         # my_print_m(data)
         # columns left , right
         for x in range(j - 1, -1, -1):
             my_c = data[i][x]
-            if my_c == 'W':
+            if my_c == 'W' or my_c == 'C':
                 break
             elif my_c in o_op_list:
                 continue
             elif my_c == 'S':
-                continue
+                data[i][x] = 's'
             else:
-                data[i][x] = 'M'
+                data[i][x] = mask_c
         # my_print_m(data)
         for x in range(j + 1, m, 1):
             my_c = data[i][x]
-            if my_c == 'W':
+            if my_c == 'W' or my_c == 'C':
                 break
             elif my_c in o_op_list:
                 continue
             elif my_c == 'S':
-                continue
+                data[i][x] = 's'
             else:
-                data[i][x] = 'M'
+                data[i][x] = mask_c
         # my_print_m(data)
 
     pass
@@ -159,23 +165,26 @@ def my_mask(data):
 
 def my_search(data, layer, next_node_list, node_dic):
     my_print("  " * layer + "next_node_list={0} node_set={1}".format(next_node_list, node_dic))
-    new_next_node_list = []
-    # if layer > 10:
-    #     print("ERROR layer={0}".format(layer))
-    if not next_node_list:
-        my_print("处理完成")
-        return
-    for node in next_node_list:
-        tmp_list, my_c = my_get_next_list(data, node)
-        for new_node in tmp_list:
-            if new_node in node_dic:
-                pass
-            else:
-                new_next_node_list.append(new_node)
-                node_dic[new_node] = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
-    my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
+    while True:
+        if not next_node_list:
+            my_print("处理完成")
+            return
+        layer = layer + 1
 
-    my_search(data, layer + 1, new_next_node_list, node_dic)
+        new_next_node_list = []
+        # if layer > 10:
+        #     print("ERROR layer={0}".format(layer))
+
+        for node in next_node_list:
+            tmp_list, my_c = my_get_next_list(data, node)
+            for new_node in tmp_list:
+                if new_node in node_dic:
+                    pass
+                else:
+                    new_next_node_list.append(new_node)
+                    node_dic[new_node] = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
+        my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
+        next_node_list = new_next_node_list
 
 
 def my_get_next_list(data, node):
@@ -187,7 +196,7 @@ def my_get_next_list(data, node):
     res = []
     my_c = data[i][j]
     # my_print("__157__  {0},{1} = {2}".format(i, j, my_c))
-    if my_c == 'W' or my_c == 'M' or my_c == "C":
+    if my_c == 'W' or my_c == mask_c or my_c == "C":
         my_print("__166__  {0},{1} = {2}".format(i, j, my_c))
         print("__167__ERROR")
         return []
@@ -278,6 +287,4 @@ def my_main():
         print(x)
 
 
-
 my_main()
-
