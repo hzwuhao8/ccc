@@ -183,19 +183,28 @@ def my_search(data, layer, next_node_list, node_dic):
         for node in next_node_list:
             tmp_list, my_c = my_get_next_list(data, node)
             for new_node in tmp_list:
+                distance_str = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
                 if new_node in node_dic:
+                    # 如果 距离更近 则更新
+                    # 和他有关的后续节点 是不是 都要重新更新
+                    # 会不会 导致 发散
+                    if distance_str.count('.') < node_dic[new_node].count('.'):
+                        node_dic[new_node] = distance_str
+                        # 和他有关的节点 需要重新搜索
+                        new_next_node_list.append((my_c, new_node))
+
                     pass
                 else:
                     new_next_node_list.append((my_c, new_node))
                     # 需要循环结束后，再决定 如何添加
                     # LRUD 比 .  优先
-                    node_dic[new_node] = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
+                    node_dic[new_node] = distance_str
         # new_next_node_list  需要按照 LRUD 优先排序
 
         my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
         next_node_list = []
-        new_next_node_list.sort()
-        new_next_node_list.reverse()
+        # new_next_node_list.sort()
+        # new_next_node_list.reverse()
         for c, p in new_next_node_list:
             next_node_list.append(p)
 
