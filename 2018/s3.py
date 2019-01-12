@@ -13,7 +13,7 @@ import copy
 
 
 def my_print(x, end="\n"):
-    # print(x, end=end)
+    print(x, end=end)
     pass
 
 
@@ -186,10 +186,16 @@ def my_search(data, layer, next_node_list, node_dic):
                 if new_node in node_dic:
                     pass
                 else:
-                    new_next_node_list.append(new_node)
+                    new_next_node_list.append((my_c, new_node))
+                    # 需要循环结束后，再决定 如何添加
+                    # LRUD 比 .  优先
                     node_dic[new_node] = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
+        # new_next_node_list  需要按照 LRUD 优先排序
+
         my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
-        next_node_list = new_next_node_list
+        next_node_list = []
+        for c, p in new_next_node_list:
+            next_node_list.append(p)
 
 
 def my_get_next_list(data, node):
@@ -278,7 +284,7 @@ def my_unit_test():
 
 
 # my_unit_test()
-# my_func_test()
+my_func_test()
 
 
 def my_main():
@@ -291,5 +297,4 @@ def my_main():
     for x in res:
         print(x)
 
-
-my_main()
+# my_main()
