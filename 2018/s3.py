@@ -48,7 +48,7 @@ def data_str_to_data(data_str):
 
 def my_run(data_str):
     data = data_str_to_data(data_str)
-
+    n, m = len(data), len(data[0])
     my_print_m(data)
     my_print("===mask===" * 10)
     my_mask(data)
@@ -59,11 +59,11 @@ def my_run(data_str):
     next_node_list = []
     p = my_find_s(data)
     next_node_list.append(p)
-    node_set = set()
-    node_set.add(p)
-    my_search(data, 0, next_node_list, node_set)
+    node_dic = {p: ''}
+
+    my_search(data, 0, next_node_list, node_dic)
     data2 = copy.deepcopy(data)
-    for i, j in node_set:
+    for i, j in node_dic:
         if data2[i][j] == '.':
             data2[i][j] = 'X'
 
@@ -71,6 +71,19 @@ def my_run(data_str):
 
     my_print_m(data2)
 
+    # 从 node_dic 中提取数据
+    res = []
+    for i in range(n):
+        for j in range(m):
+            if data[i][j] == 'M':
+                res.append(-1)
+            if data[i][j] == '.':
+                if (i, j) in node_dic:
+                    res.append(node_dic[(i, j)].count('.'))
+                else:
+                    res.append(-1)
+    my_print("res={0}".format(res))
+    return res
     pass
 
 
@@ -144,8 +157,8 @@ def my_mask(data):
     pass
 
 
-def my_search(data, layer, next_node_list, node_set, ):
-    my_print("  " * layer + "next_node_list={0} node_set={1}".format(next_node_list, node_set))
+def my_search(data, layer, next_node_list, node_dic):
+    my_print("  " * layer + "next_node_list={0} node_set={1}".format(next_node_list, node_dic))
     new_next_node_list = []
     if layer > 10:
         print("ERROR layer={0}".format(layer))
@@ -153,15 +166,16 @@ def my_search(data, layer, next_node_list, node_set, ):
         my_print("处理完成")
         return
     for node in next_node_list:
-        tmp_list = my_get_next_list(data, node)
+        tmp_list, my_c = my_get_next_list(data, node)
         for new_node in tmp_list:
-            if new_node in node_set:
+            if new_node in node_dic:
                 pass
             else:
                 new_next_node_list.append(new_node)
-                node_set.add(new_node)
+                node_dic[new_node] = node_dic[node][:-1] + my_c + my_get_c(data, new_node)
     my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
-    my_search(data, layer + 1, new_next_node_list, node_set)
+
+    my_search(data, layer + 1, new_next_node_list, node_dic)
 
 
 def my_get_next_list(data, node):
@@ -201,7 +215,7 @@ def my_get_next_list(data, node):
     else:
         my_print("__191__  {0},{1} = {2}".format(i, j, my_c))
         print("__192__ ERROR")
-    return res
+    return res, my_c
 
 
 # 节点是可以进入的
@@ -226,6 +240,11 @@ def my_find_s(data):
                 return i, j
 
 
+def my_get_c(data, node):
+    i, j = node
+    return data[i][j]
+
+
 def my_unit_test():
     data1 = data_str_to_data(data_str2)
     my_print_m(data1)
@@ -236,9 +255,10 @@ def my_unit_test():
     assert not is_get_in(data1, 2, 3), "C"
     assert not is_get_in(data1, 3, 4), "S"
 
-    assert my_get_next_list(data1, (1, 1)) == [(2, 1)], "D"
-    assert my_get_next_list(data1, (1, 5)) == [], "R  {0}".format(my_get_next_list(data1, (1, 5)))
-    assert my_get_next_list(data1, (2, 5)) == [(2, 4), (1, 5), (3, 5)], ".  {0}".format(my_get_next_list(data1, (2, 5)))
+    assert my_get_next_list(data1, (1, 1)) == ([(2, 1)], 'D')
+    assert my_get_next_list(data1, (1, 5)) == ([], 'R')
+
+    assert my_get_next_list(data1, (2, 5)) == ([(2, 4), (1, 5), (3, 5)], '.')
 
     assert my_find_s(data1) == (3, 4)
 
