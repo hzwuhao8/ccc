@@ -160,8 +160,8 @@ def my_mask(data):
 def my_search(data, layer, next_node_list, node_dic):
     my_print("  " * layer + "next_node_list={0} node_set={1}".format(next_node_list, node_dic))
     new_next_node_list = []
-    if layer > 10:
-        print("ERROR layer={0}".format(layer))
+    # if layer > 10:
+    #     print("ERROR layer={0}".format(layer))
     if not next_node_list:
         my_print("处理完成")
         return
@@ -263,8 +263,8 @@ def my_unit_test():
     assert my_find_s(data1) == (3, 4)
 
 
-my_unit_test()
-my_func_test()
+# my_unit_test()
+# my_func_test()
 
 
 def my_main():
