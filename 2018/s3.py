@@ -13,7 +13,7 @@ import copy
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -194,6 +194,8 @@ def my_search(data, layer, next_node_list, node_dic):
 
         my_print("  " * layer + "新的 需要处理的new_next_node_list={0}".format(new_next_node_list))
         next_node_list = []
+        new_next_node_list.sort()
+        new_next_node_list.reverse()
         for c, p in new_next_node_list:
             next_node_list.append(p)
 
@@ -284,7 +286,7 @@ def my_unit_test():
 
 
 # my_unit_test()
-my_func_test()
+# my_func_test()
 
 
 def my_main():
@@ -297,4 +299,5 @@ def my_main():
     for x in res:
         print(x)
 
-# my_main()
+
+my_main()
