@@ -8,7 +8,7 @@ import copy
 
 
 def my_print(x, end="\n"):
-    print(x, end=end)
+    # print(x, end=end)
     pass
 
 
@@ -265,3 +265,19 @@ def my_unit_test():
 
 my_unit_test()
 my_func_test()
+
+
+def my_main():
+    n, m = [int(x) for x in input().split()]
+    data_str_list = []
+    for i in range(n):
+        data_str_list.append(input())
+    data_str = "\n".join(data_str_list)
+    res = my_run(data_str)
+    for x in res:
+        print(x)
+
+
+
+my_main()
+
