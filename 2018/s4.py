@@ -18,6 +18,7 @@
 
 
 import time
+import math
 
 
 def my_func_test():
@@ -28,7 +29,7 @@ def my_func_test():
     assert f(10) == 13
 
 
-dic_cache = {}
+dic_cache = {0: 0, 1: 1, 2: 1, 3: 2, 4: 3}
 
 
 def f1(n):
@@ -42,6 +43,24 @@ def f1(n):
         total = 0
         for k in range(2, n + 1):
             total += f1(n // k)
+    dic_cache[n] = total
+    return total
+
+
+def f2(n):
+    if n in dic_cache:
+        return dic_cache[n]
+    total = 0
+    index = 1
+    sqrt_n = math.sqrt(n)
+    while index * index <= n:
+        total += (n // index - n // (index + 1)) * f2(index)
+        index += 1
+
+    index = 2
+    while n // index > sqrt_n:
+        total += f2(n // index)
+        index += 1
     dic_cache[n] = total
     return total
 
@@ -62,17 +81,17 @@ def my_main():
     n = int(input())
     dic = {}
     t1 = time.time()
-    for i in range(2, n):
-        if i % 100000 == 0:
-            print("i={0} ts={1}".format(i, time.time() - t1))
-            print("len(dic)={0}".format(len(dic)))
-        k = n // i
-        dic[k] = dic.get(k, 0) + 1
+    ##for i in range(2, n):
+    #    if i % 100000 == 0:
+    #        print("i={0} ts={1}".format(i, time.time() - t1))
+    #        print("len(dic)={0}".format(len(dic)))
+    #    k = n // i
+    #    dic[k] = dic.get(k, 0) + 1
 
-    print("len(dic)={0}".format(len(dic)))
+    # print("len(dic)={0}".format(len(dic)))
 
-    # res = f(n)
-    # print(res)
+    res = f2(n)
+    print(res)
 
 
 my_func_test()
