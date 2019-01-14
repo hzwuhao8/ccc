@@ -58,31 +58,109 @@ def str_to_data(my_str):
 def my_run(my_str):
     n, m, data_p, data_q = str_to_data(my_str)
     path_dic = {}
-    remove_path_dic={}
+    remove_path_dic = {}
     total = 0
-    def my_one_p(p_rule):
+
+    def my_one_p(my_p_rule):
+        a, b, c = my_p_rule
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                key1 = ((i, a), (j, b))
+                key2 = ((j, b), (i, a))
+                if (i, a) == (j, b):
+                    t = remove_path_dic.get(key1, [])
+                    t.append((key1, c))
+                    remove_path_dic[key1] = t
+                elif key1 in path_dic:
+                    z = path_dic.get(key1)
+                    if z > c:
+                        path_dic[key1] = c
+                        t = remove_path_dic.get(key1, [])
+                        t.append((key1, z))
+                        remove_path_dic[key1] = t
+
+                    else:
+                        t = remove_path_dic.get(key1, [])
+                        t.append((key1, c))
+                        remove_path_dic[key1] = t
+                else:
+                    path_dic[key1] = c
+
+                if key2 in path_dic:
+                    z = path_dic.get(key2)
+                    if z > c:
+                        path_dic[key2] = c
+                        t = remove_path_dic.get(key2, [])
+                        t.append((key2, z))
+                        remove_path_dic[key2] = t
+
+                    else:
+                        t = remove_path_dic.get(key2, [])
+                        t.append((key2, c))
+                        remove_path_dic[key2] = t
+                else:
+                    path_dic[key2] = c
+
         pass
 
+    def my_one_q(my_q_rule):
+        x, y, z = my_q_rule
+        for i in range(1, m + 1):
+            for j in range(1, m + 1):
+                key1 = ((x, i), (y, j))
 
-    def my_one_q( q_rule):
+            if (x, i) == (y, j):
+                t = remove_path_dic.get(key1, [])
+                t.append((key1, z))
+                remove_path_dic[key1] = t
+
+            elif key1 in path_dic:
+                c = path_dic[key1]
+                if z >= c:
+                    t = remove_path_dic.get(key1, [])
+                    t.append((key1, z))
+                    remove_path_dic[key1] = t
+
+                else:
+                    t = remove_path_dic.get(key1, [])
+                    t.append((key1, c))
+                    remove_path_dic[key1] = t
+                    path_dic[key1] = z
+            else:
+                path_dic[key1] = z
+
+            key2 = ((y, j), (x, i))
+            if key2 in path_dic:
+                c = path_dic[key2]
+                if z >= c:
+                    t = remove_path_dic.get(key2, [])
+                    t.append((key2, z))
+                    remove_path_dic[key2] = t
+
+                else:
+                    t = remove_path_dic.get(key2, [])
+                    t.append((key2, c))
+                    remove_path_dic[key2] = t
+                    path_dic[key2] = z
+            else:
+                path_dic[key2] = z
+
         pass
 
     for p_rule in data_p:
         my_one_p(p_rule)
+        my_print("path_dic={0} len={1}".format(path_dic, len(path_dic)))
+        my_print("remove_path_dic={0}".format(remove_path_dic))
+        my_print("total={0}".format(total))
 
     for q_rule in data_q:
         my_one_q(q_rule)
 
-    my_print("path_dic={0}".format(path_dic))
+    my_print("path_dic={0} len={1}".format(path_dic, len(path_dic)))
     my_print("remove_path_dic={0}".format(remove_path_dic))
     my_print("total={0}".format(total))
 
     return total
-
-
-
-
-
 
 
 my_func_test()
