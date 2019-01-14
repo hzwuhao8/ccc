@@ -89,6 +89,9 @@ def my_main():
     #    dic[k] = dic.get(k, 0) + 1
 
     # print("len(dic)={0}".format(len(dic)))
+    sqrt_n = int((math.sqrt(n)))
+    for i in range(4, sqrt_n):
+        f2(i)
 
     res = f2(n)
     print(res)
