@@ -65,7 +65,7 @@ def my_run(my_str):
         a, b, c = my_p_rule
         rule_id = "p{0}".format(p_index)
         for i in range(1, n + 1):
-            for j in range(1, n + 1):
+            for j in range(i, n + 1):
                 key1 = ((i, a), (j, b))
 
                 if (i, a) == (j, b):
@@ -86,6 +86,24 @@ def my_run(my_str):
                         remove_path_dic[key1] = t
                 else:
                     path_dic[key1] = (rule_id, c)
+
+                key2 = ((i, b), (j, a))
+                if (i, a) == (j, b):
+                    pass
+                elif key2 in path_dic:
+                    r, z = path_dic.get(key2)
+                    if z > c:
+                        path_dic[key2] = (rule_id, c)
+                        t = remove_path_dic.get(key1, [])
+                        t.append((rule_id, z))
+                        remove_path_dic[key2] = t
+
+                    else:
+                        t = remove_path_dic.get(key2, [])
+                        t.append((rule_id, c))
+                        remove_path_dic[key2] = t
+                else:
+                    path_dic[key2] = (rule_id, c)
 
         pass
 
@@ -130,11 +148,15 @@ def my_run(my_str):
     for index in range(len(data_q)):
         q_rule = data_q[index]
         my_one_q(q_rule, index + 1)
+
     path_dic_list = list(path_dic.items())
     path_dic_list.sort()
 
     my_print("path_dic=\n{0} len={1}".format("\n".join([str(x) for x in path_dic_list]), len(path_dic)))
-    my_print("remove_path_dic={0}".format(remove_path_dic))
+
+    remove_dic_list = list(remove_path_dic.items())
+    remove_dic_list.sort()
+    my_print("remove_path_dic=\n{0}".format("\n".join([str(x) for x in remove_dic_list])))
 
     for k, v in remove_path_dic.items():
         total += sum([x[1] for x in v])
