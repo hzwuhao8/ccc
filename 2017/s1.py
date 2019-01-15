@@ -16,11 +16,15 @@ def my_func_test():
 def my_run(n, str1, str2):
     d1 = [int(x) for x in str1.split()]
     d2 = [int(x) for x in str2.split()]
-    if sum(d1) == sum(d2):
+    s1 = sum(d1)
+    s2 = sum(d2)
+    if s1 == s2:
         return n
     else:
         for i in range(-1, -n, -1):
-            if sum(d1[:i]) == sum(d2[:i]):
+            s1 = s1 - d1.pop()
+            s2 = s2 - d2.pop()
+            if s1 == s2:
                 return n + i
         return 0
 
