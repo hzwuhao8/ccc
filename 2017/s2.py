@@ -11,18 +11,25 @@
 
 def my_func_test():
     assert my_run(8, "10 50 40 7 3 110 90 2") == "10 40 7 50 3 90 2 110"
+    assert my_run(7, "10 50 40 7 3 90 2") == "10 40 7 50 3 90 2"
 
 
 def my_run(n, my_str):
     data = [int(x) for x in my_str.split()]
     data.sort()
     # print(data)
-    m = n // 2
     res = []
+    if n % 2 == 1:
+        res.append(data[0])
+        data = data[1:]
+        n = n - 1
+    m = n // 2
     for i in range(m):
         res.append(data[n - 1 - i])
         res.append(data[i])
-    # print(res)
+
+
+# print(res)
     res.reverse()
     res_str = " ".join([str(x) for x in res])
 
@@ -37,7 +44,7 @@ def my_main():
     n = int(input())
     my_str = input()
     res = my_run(n, my_str)
-    print(res)
+    print(res + " ")
 
 
 my_main()
