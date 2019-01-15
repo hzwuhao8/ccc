@@ -1,3 +1,12 @@
+#
+# 对于 数据量 大的 性能 不能满足 要求
+#
+#
+#
+#
+#
+
+
 def my_func_test():
     assert my_run(3, "1 3 3", "2 2 6") == 2
     assert my_run(3, "1 2 3", "4 5 6") == 0
@@ -16,7 +25,7 @@ def my_run(n, str1, str2):
         return 0
 
 
-my_func_test()
+# my_func_test()
 
 
 def my_main():
