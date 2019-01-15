@@ -55,3 +55,13 @@ def my_run(n, my_str):
 
 
 my_func_test()
+
+
+def my_main():
+    n = int(input())
+    my_str = input()
+    res = my_run(n, my_str)
+    print(res)
+
+
+my_main()
