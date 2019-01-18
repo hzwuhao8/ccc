@@ -25,7 +25,7 @@ def c(n, k):
         return 1
     if n - k < k:
         k = n - k
-    # my_print("n={0},k={1}".format(n, k))
+        # my_print("n={0},k={1}".format(n, k))
     p1 = 1
     for i in range(k):
         p1 *= (n - i)
@@ -93,7 +93,7 @@ def my_run(n, k, a_list):
         p1 = c(n_sa, i)
         p = p1 * p2
 
-        # print("k1={0} k2={1} p={2} p1={3} p2={4} n_sa={5} n_sb={6}".format(i, k - i, p, p1, p2, n_sa, n_sb))
+        print("k1={0} k2={1} p={2} p1={3} p2={4} n_sa={5} n_sb={6}".format(i, k - i, p, p1, p2, n_sa, n_sb))
         res += p
     my_print(res)
     return res
@@ -129,27 +129,25 @@ def my_r(k, keys, dic, layer):
 
         res += mul
         # my_print("base_data[n-k:]=".format(base_data[n - k:]))
-        if sum(base_data[n - k:]) == k:
+        if base_data[n - k:].count(1) == k:
             break
         else:
+
             for i in range(n - 1):
                 if base_data[i] == 1 and base_data[i + 1] == 0:
                     base_data[i] = 0
                     base_data[i + 1] = 1
-                    # k-1 个1
-                    form = 0
+
                     for j in range(i):
-                        k_count = k - 1
                         if base_data[j] == 0:
                             if 1 in base_data[j:i]:
                                 index = base_data.index(1, j, i)
                                 base_data[j] = 1
                                 base_data[index] = 0
-                            k_count -= 1
-                            if k_count == 0:
+                            else:
                                 break
-
                     break
+
     my_print("res={0}".format(res))
     return res
 
@@ -166,6 +164,16 @@ def my_main():
 
 
 my_main()
+
+
+def my_cnk_test():
+    assert c(10, 0) == 1
+    assert c(10, 1) == 10
+    assert c(10, 10) == 1
+
+
+my_cnk_test()
+
 
 
 def my_unit_test():
