@@ -60,6 +60,7 @@ def my_run(n, k, a_list):
         return 0
     if k == 0:
         return 0
+
     # 组合 在计数
     # 先找到 k1 k2 k3 ;  然后是  n(k1) * n(k2) *n(k3) ;   然后 再所有的 相加
     # 递归处理吗？
@@ -75,7 +76,9 @@ def my_run(n, k, a_list):
     if n_sb == 0:
         return c(n_sa, k)
 
-    my_print("n_sa={0} n_sb={1} ".format(n_sa, n_sb))
+    sa_max = min(k, n_sa)
+    sb_max = min(k, n_sb)
+    my_print("n_sa={0} sa_max={1}  n_sb={2} sb_max={3}".format(n_sa, sa_max, n_sb, sb_max))
     res = 0
     sb_dic = dict(sb)
     sb_keys = list(sb_dic.keys())
@@ -91,7 +94,7 @@ def my_run(n, k, a_list):
         p1 = c(n_sa, i)
         p = p1 * p2
 
-        print("k1={0} k2={1} p={2} p1={3} p2={4} n_sa={5} n_sb={6}".format(i, k - i, p, p1, p2, n_sa, n_sb))
+        my_print("k1={0} k2={1} p={2} p1={3} p2={4}".format(i, k - i, p, p1, p2))
         res += p
     my_print(res)
     return res

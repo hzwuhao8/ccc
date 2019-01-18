@@ -46,9 +46,9 @@ def my_run(n, k, a_list):
     #
     key_list = list(dic.keys())
     changed = False
-    if k > len(key_list) / 2 and len(key_list) >= 4:
-        k = len(key_list) - k
-        changed = True
+    #if k > len(key_list) / 2 and len(key_list) >= 4:
+    #    k = len(key_list) - k
+    #    changed = True
     all_possible = set()
     res = my_r(k, key_list, dic, 0, [], all_possible)
     my_print("all_possible={0}".format(all_possible))
