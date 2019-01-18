@@ -91,7 +91,7 @@ def my_run(n, k, a_list):
         p1 = c(n_sa, i)
         p = p1 * p2
 
-        print("k1={0} k2={1} p={2} p1={3} p2={4} n_sa={5} n_sb={6}".format(i, k - i, p, p1, p2, n_sa, n_sb))
+        # print("k1={0} k2={1} p={2} p1={3} p2={4} n_sa={5} n_sb={6}".format(i, k - i, p, p1, p2, n_sa, n_sb))
         res += p
     my_print(res)
     return res
