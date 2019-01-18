@@ -5,11 +5,31 @@
 #
 #
 #
+import random
 
 
 def my_print(x):
     # print(x)
     pass
+
+
+def fac(x):
+    mul = 1
+    for i in range(1, x + 1):
+        mul *= i
+    return mul
+
+
+def c(n, k):
+    if k == 0:
+        return 1
+    # my_print("n={0},k={1}".format(n, k))
+    p1 = 1
+    for i in range(k):
+        p1 *= (n - i)
+    p2 = fac(k)
+    # my_print("p1={0},p2={1}".format(p1, p2))
+    return p1 // p2
 
 
 def my_func_test():
@@ -44,10 +64,37 @@ def my_run(n, k, a_list):
     # 递归处理吗？
 
     #
-    key_list = list(dic.keys())
-    key_list.sort()
+    my_print("dic={0}".format(dic))
+    sa = [x for x in dic.items() if x[1] == 1]
+    sb = [x for x in dic.items() if x[1] > 1]
+    my_print("sa={0}".format(sa))
+    my_print("sb={0}".format(sb))
+    n_sa = len(sa)
+    n_sb = len(sb)
+    if n_sb == 0:
+        return c(n_sa, k)
 
-    res = my_r(k, key_list, dic, 0)
+    sa_max = min(k, n_sa)
+    sb_max = min(k, n_sb)
+    my_print("n_sa={0} sa_max={1}  n_sb={2} sb_max={3}".format(n_sa, sa_max, n_sb, sb_max))
+    res = 0
+    sb_dic = dict(sb)
+    sb_keys = list(sb_dic.keys())
+
+    for i in range(k, -1, -1):
+        if i > n_sa:
+            continue
+        if k - i > n_sb:
+            continue
+        p = 0
+
+        p2 = my_r(k - i, sb_keys, sb_dic, 0)
+        p1 = c(n_sa, i)
+        p = p1 * p2
+
+        my_print("k1={0} k2={1} p={2} p1={3} p2={4}".format(i, k - i, p, p1, p2))
+        res += p
+    my_print(res)
     return res
     pass
 
@@ -60,13 +107,23 @@ def my_r(k, keys, dic, layer):
 
     res = 0
     cc = 0
+    my_max = c(n, k)
     while True:
         cc += 1
+        if cc % 10000 == 0:
+            print(cc)
+            print(base_data)
+        if cc > my_max:
+            print("ERROR")
+            print("n={0} k={1}".format(n, k))
+            break
+
         my_print(base_data)
         mul = 1
         for index, i in enumerate(base_data):
             if i == 1:
                 mul *= dic[keys[index]]
+
         res += mul
         # my_print("base_data[n-k:]=".format(base_data[n - k:]))
         if sum(base_data[n - k:]) == k:
@@ -104,4 +161,19 @@ def my_main():
 
     print(res)
 
+
 my_main()
+
+
+def my_unit_test():
+    my_max = 100
+    for i in range(100):
+        n = random.randint(1, my_max)
+        k = random.randint(1, min(3, n))
+        dic = dict(enumerate([1] * n))
+        print("n={0} k={1}".format(n, k))
+        res = my_r(k, list(range(n)), dic, 0)
+
+        assert res == c(n, k), "n={0} k={1}".format(n, k)
+
+# my_unit_test()
