@@ -121,7 +121,7 @@ def my_r(k, keys, dic, layer):
             # print("n={0} k={1}".format(n, k))
             # break
 
-        my_print(base_data)
+        # my_print(base_data)
         mul = 1
         for index, i in enumerate(base_data):
             if i == 1:
@@ -132,8 +132,10 @@ def my_r(k, keys, dic, layer):
         if base_data[n - k:].count(1) == k:
             break
         else:
-
-            for i in range(n - 1):
+            start = base_data.index(0) - 1
+            if start < 0:
+                start = 0
+            for i in range(start, n - 1):
                 if base_data[i] == 1 and base_data[i + 1] == 0:
                     base_data[i] = 0
                     base_data[i + 1] = 1
@@ -172,8 +174,7 @@ def my_cnk_test():
     assert c(10, 10) == 1
 
 
-my_cnk_test()
-
+# my_cnk_test()
 
 
 def my_unit_test():
