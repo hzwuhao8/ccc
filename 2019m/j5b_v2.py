@@ -159,7 +159,7 @@ def my_main():
     n, k = [int(x) for x in input().split()]
     data = [int(x) for x in input().split()]
     res = my_run(n, k, data)
-
+    res = res % 998244353
     print(res)
 
 
@@ -172,7 +172,7 @@ def my_cnk_test():
     assert c(10, 10) == 1
 
 
-my_cnk_test()
+# my_cnk_test()
 
 
 
