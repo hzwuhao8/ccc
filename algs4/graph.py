@@ -90,6 +90,43 @@ class DepthFirstPaths:
         pass
 
 
+class BreadFirstPaths:
+    def __init__(self, g, s):
+        self.g = g
+        self.s = s
+        self.marked = {}
+        self.edge_to = {}
+        self.bfs(g, s)
+        my_print(self.marked)
+        my_print(self.edge_to)
+
+    def has_path_to(self, v):
+        return self.marked.get(v, False)
+
+    def path_to(self, v):
+        tmp = []
+        if self.has_path_to(v):
+            current = v
+            while current != self.s:
+                tmp.append(current)
+                current = self.edge_to[current]
+            tmp.append(current)
+        tmp.reverse()
+        return tmp
+
+    def bfs(self, g, s):
+        q = list()
+        q.append(s)
+        self.marked[s] = True
+        while q:
+            v = q.pop(0)
+            for w in g.adj(v):
+                if not self.marked.get(w, False):
+                    q.append(w)
+                    self.marked[w] = True
+                    self.edge_to[w] = v
+
+
 def my_print(x, end="\n"):
     print(x, end=end)
 
@@ -126,6 +163,13 @@ def my_unit_test():
     assert [0, 5, 4] == dfs.path_to(4)
     assert [0] == dfs.path_to(0)
     assert [] == dfs.path_to(7)
+
+    bfs = BreadFirstPaths(g1, 0)
+    assert bfs.has_path_to(3)
+    assert [0, 5, 3] == bfs.path_to(3)
+    assert [0, 5, 4] == bfs.path_to(4)
+    assert [0] == bfs.path_to(0)
+    assert [] == bfs.path_to(7)
 
 
 my_unit_test()
