@@ -22,7 +22,7 @@ class Graph:
         l2.append(v)
         self.dic[w] = l2
 
-    def e(self):
+    def v(self):
         return list(self.dic.keys())
 
     def v_size(self):
@@ -144,7 +144,7 @@ class CC:
         self.edge_to = {}
         self.id = {}
         self.count = 0
-        for s in g.e():
+        for s in g.v():
             if not self.marked.get(s, False):
                 self.dfs(g, s, self.count)
                 self.count += 1
