@@ -44,6 +44,52 @@ class Graph:
         return len([x for x in self.dic.items() if x[0] in x[1]])
 
 
+# 接口 定义了 API
+
+
+class Paths:
+    def __init__(self, g, s):
+        self.g = g
+        self.s = s
+
+    def has_path_to(self, v):
+        pass
+
+    def path_to(self, v):
+        pass
+
+
+class DepthFirstPaths:
+    def __init__(self, g, s):
+        self.g = g
+        self.s = s
+        self.marked = {}
+        self.edge_to = {}
+        self.dfs(g, s)
+
+    def has_path_to(self, v):
+        return self.marked.get(v, False)
+
+    def path_to(self, v):
+        tmp = []
+        if self.has_path_to(v):
+            current = v
+            while current != self.s:
+                tmp.append(current)
+                current = self.edge_to[current]
+            tmp.append(current)
+        tmp.reverse()
+        return tmp
+
+    def dfs(self, g, v):
+        self.marked[v] = True
+        for w in g.adj(v):
+            if not self.marked.get(w, False):
+                self.dfs(g, w)
+                self.edge_to[w] = v
+        pass
+
+
 def my_print(x, end="\n"):
     print(x, end=end)
 
@@ -72,6 +118,14 @@ def my_unit_test():
     assert 4 == g1.degree(0)
     assert 4 == g1.max_degree()
     assert 1 == g1.number_of_self_loops()
+    dfs = DepthFirstPaths(g1, 0)
+    assert dfs.has_path_to(3)
+    my_print(dfs.path_to(3))
+    my_print(dfs.path_to(0))
+    my_print(dfs.path_to(7))
+    assert [0, 5, 4] == dfs.path_to(4)
+    assert [0] == dfs.path_to(0)
+    assert [] == dfs.path_to(7)
 
 
 my_unit_test()
