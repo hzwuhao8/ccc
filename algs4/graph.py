@@ -22,6 +22,9 @@ class Graph:
         l2.append(v)
         self.dic[w] = l2
 
+    def e(self):
+        return list(self.dic.keys())
+
     def v_size(self):
         return len(self.dic)
 
@@ -96,9 +99,11 @@ class BreadFirstPaths:
         self.s = s
         self.marked = {}
         self.edge_to = {}
+        self.dist_to = {}
         self.bfs(g, s)
         my_print(self.marked)
         my_print(self.edge_to)
+        my_print(self.dist_to)
 
     def has_path_to(self, v):
         return self.marked.get(v, False)
@@ -118,13 +123,51 @@ class BreadFirstPaths:
         q = list()
         q.append(s)
         self.marked[s] = True
+        self.dist_to[s] = 0
         while q:
             v = q.pop(0)
             for w in g.adj(v):
                 if not self.marked.get(w, False):
                     q.append(w)
                     self.marked[w] = True
+                    self.dist_to[w] = self.dist_to[v] + 1
                     self.edge_to[w] = v
+
+
+# DFS 进行 搜索
+
+
+class CC:
+    def __init__(self, g):
+        self.g = g
+        self.marked = {}
+        self.edge_to = {}
+        self.id = {}
+        self.count = 0
+        for s in g.e():
+            if not self.marked.get(s, False):
+                self.dfs(g, s, self.count)
+                self.count += 1
+
+        my_print(self.id)
+
+    def connected(self, v, w):
+        return self.id[v] == self.id[w]
+
+    def my_count(self):
+        return self.count
+
+    def my_id(self, v):
+        return self.id[v]
+
+    def dfs(self, g, v, count):
+        self.marked[v] = True
+        self.id[v] = count
+        for w in g.adj(v):
+            if not self.marked.get(w, False):
+                self.dfs(g, w, count)
+                self.edge_to[w] = v
+                self.id[w] = count
 
 
 def my_print(x, end="\n"):
@@ -170,6 +213,11 @@ def my_unit_test():
     assert [0, 5, 4] == bfs.path_to(4)
     assert [0] == bfs.path_to(0)
     assert [] == bfs.path_to(7)
+
+    cc = CC(g1)
+    assert 4 == cc.my_count()
+    assert cc.connected(0, 3)
+    assert not cc.connected(0, 13)
 
 
 my_unit_test()
