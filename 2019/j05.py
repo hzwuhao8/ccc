@@ -6,7 +6,9 @@ def main():
     steps = int(steps_str)
     op_list = []
     rules = [[f1, t1], [f2, t2], [f3, t3]]
-    run(f, rules, 0, t, steps, op_list)
+    # rules = [[t1, f1], [t2, f2], [t3, f3]]
+    mem = dict()
+    run(f, rules, 0, t, steps, op_list, mem)
 
 
 #
@@ -32,10 +34,7 @@ def one_step(ff, rule):
     return result
 
 
-is_over = False
-
-
-def run(ff, rules, layer, want, max_steps, op_list):
+def run(ff, rules, layer, want, max_steps, op_list, mem):
     # print(ff, layer, op_list)
     if layer == max_steps and ff == want:
         # print("ok")
@@ -46,9 +45,13 @@ def run(ff, rules, layer, want, max_steps, op_list):
     if layer >= max_steps:
         # print("NOT FOUND")
         return False
-
+    if str(layer) + ":" + ff in mem:
+        # print("IN MEM")
+        return False
     # 进行深度优先 搜索
     layer = layer + 1
+    if layer > max_steps:
+        return False
     res = False
     for rule_index in range(len(rules)):
         rule = rules[rule_index]
@@ -57,8 +60,9 @@ def run(ff, rules, layer, want, max_steps, op_list):
             op = [rule_index + 1] + op
             next_op_list = op_list[:]
             next_op_list.append(op)
-            res = run(op[2], rules, layer, want, max_steps, next_op_list)
+            res = run(op[2], rules, layer, want, max_steps, next_op_list, mem)
             if res:
+                mem[str(layer) + ":" + op[2]] = res
                 break
         if res:
             break
