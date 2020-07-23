@@ -64,10 +64,11 @@ def main():
             if res == "yes":
                 return res
             else:
-                tmp_node = tmp_node + next_node
+                tmp_node.extend(next_node)
+
         layer = layer + 1
         nodes = tmp_node
-        print(layer, len(tmp_node))
+        # print(layer, len(tmp_node))
     return "no"
 
 
