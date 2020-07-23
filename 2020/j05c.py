@@ -58,18 +58,15 @@ def main():
     nodes = [[m, n, m * n]]
     layer = 1
     while len(nodes) > 0:
-        tmp = nodes[:]
-        nodes = list()
         tmp_node = []
-        for current in tmp:
+        for current in nodes:
             res, next_node = run(current[0], current[1], layer)
             if res == "yes":
                 return res
             else:
                 tmp_node = tmp_node + next_node
         layer = layer + 1
-        nodes = nodes + tmp_node
-
+        nodes = tmp_node
         print(layer, len(tmp_node))
     return "no"
 
