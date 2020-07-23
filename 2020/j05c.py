@@ -13,17 +13,33 @@ mem = dict()
 node_dict = dict()
 node_set = set()
 
+data_dict = dict()
+
+for i in range(m):
+    for j in range(n):
+        op = data[i + 1][j + 1]
+        if op in data_dict:
+            tmp = data_dict[op]
+            tmp.append([i + 1, j + 1, op])
+            data_dict[op] = tmp
+        else:
+            tmp = list()
+            tmp.append([i + 1, j + 1, op])
+            data_dict[op] = tmp
+
 
 def next_layer(x, y, layer):
     op = x * y
     layer = layer + 1
+    if op in data_dict:
+        op_list = data_dict.get(op)
+    else:
+        return list()
     next_op = []
-    for i in range(m):
-        for j in range(n):
-            if data[i + 1][j + 1] == op:
-                if (i + 1, j + 1) not in node_dict:
-                    node_dict[(i + 1, j + 1)] = layer
-                    next_op.append([i + 1, j + 1, op, layer])
+    for op in op_list:
+        if (op[0], op[1]) not in node_dict:
+            node_dict[(op[0], op[1])] = layer
+            next_op.append([op[0], op[1], op, layer])
     return next_op
 
 
@@ -38,17 +54,25 @@ def run(x, y, layer):
 
 
 def main():
+    # nodes = dict()
     nodes = [[m, n, m * n]]
+    layer = 1
     while len(nodes) > 0:
         tmp = nodes[:]
+        nodes = list()
+        tmp_node = []
         for current in tmp:
-            nodes.remove(current)
-            res, next_node = run(current[0], current[1], 1)
+            res, next_node = run(current[0], current[1], layer)
             if res == "yes":
                 return res
             else:
-                nodes = nodes + next_node
+                tmp_node = tmp_node + next_node
+        layer = layer + 1
+        nodes = nodes + tmp_node
+
+        print(layer, len(tmp_node))
     return "no"
+
 
 res1 = main()
 print(res1)
