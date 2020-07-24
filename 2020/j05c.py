@@ -37,8 +37,8 @@ def next_layer(x, y, layer):
         return list()
     next_op = []
     for op in op_list:
-        if (op[0], op[1]) not in node_dict:
-            node_dict[(op[0], op[1])] = layer
+        if (op[0], op[1]) not in node_set:
+            node_set.add((op[0], op[1]))
             next_op.append([op[0], op[1], op, layer])
     return next_op
 
@@ -68,7 +68,7 @@ def main():
 
         layer = layer + 1
         nodes = tmp_node
-        # print(layer, len(tmp_node))
+        print(layer, len(tmp_node))
     return "no"
 
 
