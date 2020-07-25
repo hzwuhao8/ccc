@@ -1,6 +1,7 @@
 import itertools
 import collections
-import hashlib
+# import hashlib
+from hashlib import md5
 
 n = input().strip()
 h = input().strip()
@@ -23,12 +24,14 @@ x = collections.Counter(n)
 y = collections.Counter(h)
 str_set = set()
 ya = h[0:n_size]
-
+m = md5()
 # print(ya)
 t0 = collections.Counter(ya)
 # print(t0)
 if t0 == x:
-    str_set.add(hashlib.md5(ya.encode()).hexdigest())
+    tt = m.copy()
+    tt.update(ya.encode())
+    str_set.add(tt.hexdigest())
 
 for i in range(1, h_size - n_size + 1):
     if h[i - 1] != h[i + n_size - 1]:
@@ -39,7 +42,9 @@ for i in range(1, h_size - n_size + 1):
     # print(t0)
     if t0 == x:
         ya = h[i:i + n_size]
-        str_set.add(hashlib.md5(ya.encode()).hexdigest())
+        tt = m.copy()
+        tt.update(ya.encode())
+        str_set.add(tt.hexdigest())
         count = count + 1
 
 print(len(str_set))
