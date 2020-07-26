@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 # 从 MN  -> 1,1
 # 从  1,1 -> MN
 # 从二个方向 进行， 当  MN -> 1,1  新节点的量达到 5000 就暂停，从 另一个方向进行搜索

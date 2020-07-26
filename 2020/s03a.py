@@ -3,7 +3,6 @@ import collections
 # import hashlib
 from hashlib import md5
 
-
 n = input().strip()
 h = input().strip()
 
@@ -21,6 +20,8 @@ h_size = len(h)
 #
 count = 0
 x = collections.Counter(n)
+
+len_x = len(x)
 # print(x)
 y = collections.Counter(h)
 str_set = set()
@@ -28,24 +29,43 @@ ya = h[0:n_size]
 m = md5()
 # print(ya)
 t0 = collections.Counter(ya)
+
 # print(t0)
 if t0 == x:
     tt = m.copy()
     tt.update(ya.encode())
     str_set.add(tt.hexdigest())
 
-for i in range(1, h_size - n_size + 1):
-    if h[i - 1] != h[i + n_size - 1]:
-        t0.subtract(h[i - 1])
-        if t0[h[i - 1]] == 0:
-            del t0[h[i - 1]]
-        t0.update(h[i + n_size - 1])
-    # print(t0)
-    if t0 == x:
-        ya = h[i:i + n_size]
+i = 1
+max_position = h_size - n_size + 1
+# max_position = 10
+# print(x)
+while i < max_position:
+    # if h[i - 1] != h[i + n_size - 1]:
+    #     t0.subtract(h[i - 1])
+    #     # if t0[h[i - 1]] == 0:
+    #     #     del t0[h[i - 1]]
+    #     t0.update(h[i + n_size - 1])
+    # # print(t0)
+    ya = h[i:i + n_size]
+    # print(ya)
+    t0 = collections.Counter(ya)
+    total = 0
+    if len(t0) > len_x:
+        for k, v in t0.items():
+            # print(k, v)
+            total = total + abs(v - x[k])
+    else:
+        for k, v in x.items():
+            # print(k, v)
+            total = total + abs(v - t0[k])
+    # print(total)
+    if total == 0:
         tt = m.copy()
         tt.update(ya.encode())
         str_set.add(tt.hexdigest())
-        count = count + 1
+        i += 1
+    else:
+        i += max(1, total // 2)
 
 print(len(str_set))
