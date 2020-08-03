@@ -21,7 +21,7 @@ for i in range(1, n_ring_len):
     # prefix_sum_list.append(prefix_sum_list[i - 1] + chr_to_num[n_ring[i]])
     prefix_sum_list[i] = (prefix_sum_list[i - 1] + chr_to_num[n_ring[i]])
 
-print(prefix_sum_list)
+# print(prefix_sum_list)
 
 b_counter = x['B']
 max_b = 0
