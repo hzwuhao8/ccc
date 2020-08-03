@@ -4,7 +4,7 @@
 
 import collections
 
-chr_to_num = {'A': 0, 'B': 1, 'C': 2}
+chr_to_num = {'A': 0, 'B': 1, 'C': 0}
 n = input()
 x = collections.Counter(n)
 
@@ -20,6 +20,8 @@ prefix_sum_list[0] = chr_to_num[n_ring[0]]
 for i in range(1, n_ring_len):
     # prefix_sum_list.append(prefix_sum_list[i - 1] + chr_to_num[n_ring[i]])
     prefix_sum_list[i] = (prefix_sum_list[i - 1] + chr_to_num[n_ring[i]])
+
+print(prefix_sum_list)
 
 b_counter = x['B']
 max_b = 0
