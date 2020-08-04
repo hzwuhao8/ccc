@@ -13,12 +13,16 @@ data = [int(x) for x in input().split()]
 
 m = n % k
 my_sum = 0
-for i in range(m, k + 1):
-    d1 = data[0:i]
-    d2 = data[i:]
-    tmp = max(d1) + max(d2)
-    # print(i, tmp)
-    if tmp > my_sum:
-        my_sum = tmp
+
+if m == 0:
+    my_sum = max(data)
+else:
+    for i in range(m, k + 1):
+        d1 = data[0:i]
+        d2 = data[i:]
+        tmp = max(d1) + max(d2)
+        # print(i, tmp)
+        if tmp > my_sum:
+            my_sum = tmp
 
 print(my_sum)
