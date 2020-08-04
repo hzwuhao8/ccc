@@ -17,12 +17,18 @@ my_sum = 0
 if m == 0:
     my_sum = max(data)
 else:
-    for i in range(m, k + 1):
-        d1 = data[0:i]
-        d2 = data[i:]
-        tmp = max(d1) + max(d2)
-        # print(i, tmp)
-        if tmp > my_sum:
-            my_sum = tmp
+    t1 = max(data)
+    i = data.index(t1)
+    if i < m:
+        t2 = max(data[m + 1:])
+    elif i == m:
+        t2 = max(max(data[0:m]), max(data[m + 1:]))
+    elif i < k:
+        t2 = max(data[i + 1:])
+    elif i == k:
+        t2 = max(max(data[0:k]), max(data[k + 1:]))
+    else:
+        t2 = max(data[0:k])
+    my_sum = t1 + t2
 
 print(my_sum)
